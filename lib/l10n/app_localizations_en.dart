@@ -62,4 +62,53 @@ final class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clearDay => 'Clear Day';
+
+
+  @override
+  String get holidayHours => 'Holiday Hours';
+
+  @override
+  String get holidayPay => 'Holiday Pay';
+
+  @override
+  String get companyRules => 'Company Rules';
+
+  @override
+  String get weekendOvertime => 'All weekend hours are overtime';
+
+  @override
+  String get moveWeekendHoliday => 'Move weekend holidays to next working day';
+
+  @override
+  String get companyHolidays => 'Company Holidays';
+
+  @override
+  String get addHoliday => 'Add Holiday';
+
+  @override
+  String get noHolidays => 'No company holidays yet';
+
+  @override
+  String get contract => 'Contract';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get vessel => 'Vessel';
+
+  @override
+  String get rank => 'Rank';
+
+  @override
+  String get contractStart => 'Contract Start';
+
+  @override
+  String get contractEnd => 'Contract End';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get observedHoliday => 'Observed holiday';
 }

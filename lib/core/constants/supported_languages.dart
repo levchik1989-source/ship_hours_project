@@ -18,6 +18,7 @@ final class SupportedLanguages {
   static const List<SupportedLanguage> values = [
     SupportedLanguage(locale: Locale('en'), nativeName: 'English', englishName: 'English'),
     SupportedLanguage(locale: Locale('uk'), nativeName: 'Українська', englishName: 'Ukrainian'),
+    SupportedLanguage(locale: Locale('ru'), nativeName: 'Русский', englishName: 'Russian'),
     SupportedLanguage(locale: Locale('pl'), nativeName: 'Polski', englishName: 'Polish'),
     SupportedLanguage(locale: Locale('de'), nativeName: 'Deutsch', englishName: 'German'),
     SupportedLanguage(locale: Locale('fr'), nativeName: 'Français', englishName: 'French'),

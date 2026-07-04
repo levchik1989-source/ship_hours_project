@@ -11,6 +11,7 @@ import 'app_localizations_nl.dart';
 import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
+import 'app_localizations_ru.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_uk.dart';
 import 'app_localizations_zh.dart';
@@ -23,6 +24,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = [
     Locale('en'),
     Locale('uk'),
+    Locale('ru'),
     Locale('pl'),
     Locale('de'),
     Locale('fr'),
@@ -61,6 +63,22 @@ abstract class AppLocalizations {
   String get darkTheme;
   String get language;
   String get clearDay;
+  String get holidayHours => 'Holiday Hours';
+  String get holidayPay => 'Holiday Pay';
+  String get companyRules => 'Company rules';
+  String get weekendOvertime => 'All weekend hours are overtime';
+  String get moveWeekendHoliday => 'Move weekend holidays to next working day';
+  String get companyHolidays => 'Company holidays';
+  String get addHoliday => 'Add holiday';
+  String get noHolidays => 'No company holidays yet';
+  String get contract => 'Contract';
+  String get company => 'Company';
+  String get vessel => 'Vessel';
+  String get rank => 'Rank';
+  String get contractStart => 'Contract start';
+  String get contractEnd => 'Contract end';
+  String get notSet => 'Not set';
+  String get observedHoliday => 'Observed holiday';
 }
 
 final class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -76,6 +94,8 @@ final class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizat
     switch (locale.languageCode) {
       case 'uk':
         return const AppLocalizationsUk();
+      case 'ru':
+        return const AppLocalizationsRu();
       case 'pl':
         return const AppLocalizationsPl();
       case 'de':

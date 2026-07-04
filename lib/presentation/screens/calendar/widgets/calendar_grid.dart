@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/month_utils.dart';
+import '../../../../domain/entities/app_settings.dart';
 import '../../../../domain/entities/day_record.dart';
 import 'calendar_day_tile.dart';
 
@@ -8,11 +9,13 @@ final class CalendarGrid extends StatelessWidget {
   const CalendarGrid({
     required this.month,
     required this.records,
+    required this.settings,
     super.key,
   });
 
   final DateTime month;
   final List<DayRecord> records;
+  final AppSettings settings;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ final class CalendarGrid extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final day = days[index];
-        return CalendarDayTile(date: day, month: month, record: _recordFor(day));
+        return CalendarDayTile(date: day, month: month, record: _recordFor(day), settings: settings);
       },
     );
   }

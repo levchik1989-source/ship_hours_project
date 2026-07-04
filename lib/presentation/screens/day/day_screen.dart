@@ -67,8 +67,8 @@ final class _DayScreenContent extends StatelessWidget {
                     itemBuilder: (context, hour) {
                       return HourRow(
                         hour: hour,
-                        firstSlot: record.slots[hour * 2],
-                        secondSlot: record.slots[hour * 2 + 1],
+                        firstCategory: calculation.slotCategories[hour * 2],
+                        secondCategory: calculation.slotCategories[hour * 2 + 1],
                         onFirstTap: () async {
                           await controller.toggleSlot(hour * 2);
                           if (context.mounted) {

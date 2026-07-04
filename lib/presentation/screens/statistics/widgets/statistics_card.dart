@@ -22,10 +22,12 @@ final class StatisticsCard extends StatelessWidget {
           children: [
             _row(context, localizations.regularHours, statistics.regularHours.toStringAsFixed(1)),
             _row(context, localizations.overtimeHours, statistics.overtimeHours.toStringAsFixed(1)),
+            _row(context, localizations.holidayHours, statistics.holidayHours.toStringAsFixed(1)),
             _row(context, localizations.totalHours, statistics.totalHours.toStringAsFixed(1)),
             const Divider(),
             _row(context, localizations.regularPay, MoneyFormatter.format(amount: statistics.regularPay, currency: settings.currency)),
             _row(context, localizations.overtimePay, MoneyFormatter.format(amount: statistics.overtimePay, currency: settings.currency)),
+            _row(context, localizations.holidayPay, MoneyFormatter.format(amount: statistics.holidayPay, currency: settings.currency)),
             _row(context, localizations.totalPay, MoneyFormatter.format(amount: statistics.totalPay, currency: settings.currency)),
           ],
         ),

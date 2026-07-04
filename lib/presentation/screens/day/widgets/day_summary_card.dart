@@ -13,33 +13,76 @@ final class DaySummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
+    final l = AppLocalizations.of(context);
+    final note = calculation.isObservedHoliday && !calculation.isHoliday ? l.observedHoliday : null;
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _row(context, localizations.regularHours, calculation.regularHours.toStringAsFixed(1)),
-            _row(context, localizations.overtimeHours, calculation.overtimeHours.toStringAsFixed(1)),
-            _row(context, localizations.totalHours, calculation.totalHours.toStringAsFixed(1)),
-            const Divider(),
-            _row(context, localizations.regularPay, MoneyFormatter.format(amount: calculation.regularPay, currency: settings.currency)),
-            _row(context, localizations.overtimePay, MoneyFormatter.format(amount: calculation.overtimePay, currency: settings.currency)),
-            _row(context, localizations.totalPay, MoneyFormatter.format(amount: calculation.totalPay, currency: settings.currency)),
+            if (settings.companyName.isNotEmpty || settings.vesselName.isNotEmpty || settings.rank.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  [settings.companyName, settings.vesselName, settings.rank].where((value) => value.trim().isNotEmpty).join(' • '),
+                  style: Theme.of(context).textTheme.labelLarge,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            Row(
+              children: [
+                Expanded(child: _metric(context, l.totalHours, calculation.totalHours.toStringAsFixed(1), Icons.schedule)),
+                const SizedBox(width: 8),
+                Expanded(child: _metric(context, l.totalPay, MoneyFormatter.format(amount: calculation.totalPay, currency: settings.currency), Icons.payments_outlined)),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(child: _smallMetric(context, l.regularHours, calculation.regularHours, const Color(0xFF2E7D32))),
+                Expanded(child: _smallMetric(context, l.overtimeHours, calculation.overtimeHours, const Color(0xFFFFA000))),
+                Expanded(child: _smallMetric(context, l.holidayHours, calculation.holidayHours, const Color(0xFFD84315))),
+              ],
+            ),
+            if (note != null) ...[
+              const SizedBox(height: 6),
+              Text(note, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: const Color(0xFFD84315))),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _row(BuildContext context, String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+  Widget _metric(BuildContext context, String title, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(14),
+      ),
       child: Row(
         children: [
-          Expanded(child: Text(title)),
-          Text(value, style: Theme.of(context).textTheme.titleMedium),
+          Icon(icon, size: 18),
+          const SizedBox(width: 8),
+          Expanded(child: Text(title, style: Theme.of(context).textTheme.labelMedium)),
+          Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+        ],
+      ),
+    );
+  }
+
+  Widget _smallMetric(BuildContext context, String title, double value, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(width: 8, height: 8, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
+          const SizedBox(width: 4),
+          Flexible(child: Text('${value.toStringAsFixed(1)}h', style: Theme.of(context).textTheme.labelMedium)),
         ],
       ),
     );

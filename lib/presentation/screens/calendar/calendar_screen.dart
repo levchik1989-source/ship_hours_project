@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../app/app_router.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
 import 'widgets/calendar_grid.dart';
 import 'widgets/month_header.dart';
@@ -14,6 +15,7 @@ final class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
     final controller = context.watch<CalendarController>();
+    final settings = context.watch<AppSettingsController>().settings;
 
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +53,7 @@ final class CalendarScreen extends StatelessWidget {
                   child: CalendarGrid(
                     month: controller.selectedMonth,
                     records: controller.records,
+                    settings: settings,
                   ),
                 ),
               ],
