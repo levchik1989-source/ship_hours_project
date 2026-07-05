@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+import '../../../app/app_router.dart';
 import '../../../domain/services/statistics_calculator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
@@ -10,7 +10,10 @@ import 'widgets/export_card.dart';
 import 'widgets/statistics_card.dart';
 
 final class StatisticsScreen extends StatelessWidget {
-  const StatisticsScreen({required this.selectedMonth, super.key});
+  const StatisticsScreen({
+    required this.selectedMonth,
+    super.key,
+  });
 
   final DateTime selectedMonth;
 
@@ -19,18 +22,59 @@ final class StatisticsScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final settings = context.watch<AppSettingsController>().settings;
     final calendarController = context.watch<CalendarController>();
+
     final statistics = StatisticsCalculator.calculate(
-        records: calendarController.records, settings: settings);
+      records: calendarController.records,
+      settings: settings,
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text(localizations.statistics)),
+      appBar: AppBar(
+        title: Text(localizations.statistics),
+        centerTitle: true,
+      ),
+      bottomNavigationBar: NavigationBar(
+        height: 72,
+        selectedIndex: 1,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        onDestinationSelected: (index) {
+          if (index == 0) {
+            Navigator.of(context).pushReplacementNamed(AppRouter.calendar);
+          } else if (index == 2) {
+            Navigator.of(context).pushReplacementNamed(AppRouter.settings);
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month),
+            label: 'Calendar',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart),
+            label: 'Statistics',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
-          StatisticsCard(statistics: statistics, settings: settings),
+          StatisticsCard(
+            statistics: statistics,
+            settings: settings,
+          ),
           const SizedBox(height: 12),
           ExportCard(
-              statistics: statistics, settings: settings, month: selectedMonth),
+            statistics: statistics,
+            settings: settings,
+            month: selectedMonth,
+          ),
         ],
       ),
     );
