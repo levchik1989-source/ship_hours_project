@@ -19,7 +19,8 @@ final class StatisticsCalculator {
     double holidayPay = 0;
 
     for (final record in records) {
-      final result = HoursCalculator.calculate(record: record, settings: settings);
+      final result =
+          HoursCalculator.calculate(record: record, settings: settings);
       regularHours += result.regularHours;
       overtimeHours += result.overtimeHours;
       holidayHours += result.holidayHours;
@@ -28,11 +29,24 @@ final class StatisticsCalculator {
       holidayPay += result.holidayPay;
     }
 
-    final fixedOvertimeHours = settings.fixedOvertimeEnabled ? settings.fixedOvertimeHours : 0.0;
-    final paidOvertimeHours = overtimeHours - fixedOvertimeHours;
-    final paidOvertime = paidOvertimeHours > 0 ? paidOvertimeHours : 0.0;
+    final daysInMonth = records.isEmpty
+        ? 30
+        : DateTime(records.first.date.year, records.first.date.month + 1, 0)
+            .day;
+    final regularMonthNorm = daysInMonth * 8.0;
+    final workedMonthPart = regularMonthNorm > 0
+        ? (regularHours / regularMonthNorm).clamp(0.0, 1.0)
+        : 0.0;
+
+    final fixedOvertimeHours = settings.fixedOvertimeEnabled
+        ? settings.fixedOvertimeHours * workedMonthPart
+        : 0.0;
+    final paidOvertimeHours =
+        (overtimeHours - fixedOvertimeHours).clamp(0.0, double.infinity);
+    final paidOvertime = paidOvertimeHours;
     overtimePay = paidOvertime * settings.overtimeRate;
-    final totalPay = settings.baseSalary + regularPay + overtimePay + holidayPay;
+    final totalPay =
+        settings.baseSalary + regularPay + overtimePay + holidayPay;
 
     return MonthStatistics(
       regularHours: regularHours,
