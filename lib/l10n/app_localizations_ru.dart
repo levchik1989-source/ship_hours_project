@@ -48,5 +48,14 @@ final class AppLocalizationsRu extends AppLocalizations {
   @override String get fixedOvertime => 'Фиксированный овертайм';
   @override String get fixedOvertimeEnabled => 'Использовать фиксированный месячный OT';
   @override String get fixedOvertimeHours => 'Фиксированные часы OT в месяц';
-  @override String get fixedOvertimeHint => 'Для компаний с гарантированным месячным OT, например 103ч или 107ч.';
+  @override String get fixedOvertimeHint => 'Месячный OT, который уже включён в зарплату. Оплачиваемый OT = весь OT - Fixed OT.';
+  @override String get baseSalary => 'Базовая зарплата';
+  @override String get holidayRate => 'Ставка праздников';
+  @override String get paidOvertime => 'Оплачиваемый OT';
+  @override String get fixedOvertimeDeduction => 'Fixed OT';
+  @override String get salary => 'Зарплата';
+  @override String get periodStartDay => 'Начало периода';
+  @override String get export => 'Экспорт';
+  @override String get about => 'О приложении';
+  @override String get createdBy => 'Created by';
 }

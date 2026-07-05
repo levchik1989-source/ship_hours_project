@@ -31,6 +31,9 @@ final class AppSettingsController extends ChangeNotifier {
   Future<void> updateRegularHours(double value) async => _save(_settings.copyWith(regularHours: value));
   Future<void> updateRegularRate(double value) async => _save(_settings.copyWith(regularRate: value));
   Future<void> updateOvertimeRate(double value) async => _save(_settings.copyWith(overtimeRate: value));
+  Future<void> updateHolidayRate(double value) async => _save(_settings.copyWith(holidayRate: value));
+  Future<void> updateBaseSalary(double value) async => _save(_settings.copyWith(baseSalary: value));
+  Future<void> updatePeriodStartDay(int value) async => _save(_settings.copyWith(periodStartDay: value.clamp(1, 31).toInt()));
   Future<void> updateCurrency(CurrencyType value) async => _save(_settings.copyWith(currency: value));
   Future<void> updateThemeMode(ThemeMode value) async => _save(_settings.copyWith(themeMode: value));
   Future<void> updateLocale(Locale value) async => _save(_settings.copyWith(locale: value));

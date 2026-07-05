@@ -138,5 +138,32 @@ final class AppLocalizationsEn extends AppLocalizations {
   String get fixedOvertimeHours => 'Fixed overtime hours per month';
 
   @override
-  String get fixedOvertimeHint => 'For companies with guaranteed monthly OT, for example 103h or 107h.';
+  String get fixedOvertimeHint => 'Monthly overtime included in salary. Paid OT = Total OT - Fixed OT.';
+
+  @override
+  String get baseSalary => 'Base Salary';
+
+  @override
+  String get holidayRate => 'Holiday Rate';
+
+  @override
+  String get paidOvertime => 'Paid OT';
+
+  @override
+  String get fixedOvertimeDeduction => 'Fixed OT';
+
+  @override
+  String get salary => 'Salary';
+
+  @override
+  String get periodStartDay => 'Period start day';
+
+  @override
+  String get export => 'Export';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get createdBy => 'Created by';
 }

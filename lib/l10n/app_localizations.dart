@@ -87,7 +87,17 @@ abstract class AppLocalizations {
   String get fixedOvertime => 'Fixed overtime';
   String get fixedOvertimeEnabled => 'Use fixed monthly overtime';
   String get fixedOvertimeHours => 'Fixed overtime hours per month';
-  String get fixedOvertimeHint => 'For companies with guaranteed monthly OT, for example 103h or 107h.';
+  String get fixedOvertimeHint => 'Monthly overtime included in salary. Paid OT = Total OT - Fixed OT.';
+
+  String get baseSalary => 'Base salary';
+  String get holidayRate => 'Holiday rate';
+  String get paidOvertime => 'Paid OT';
+  String get fixedOvertimeDeduction => 'Fixed OT deduction';
+  String get salary => 'Salary';
+  String get periodStartDay => 'Period start day';
+  String get export => 'Export';
+  String get about => 'About';
+  String get createdBy => 'Created by';
 }
 
 final class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

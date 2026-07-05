@@ -25,19 +25,27 @@ final class StatisticsCalculator {
       holidayHours += result.holidayHours;
       totalHours += result.totalHours;
       regularPay += result.regularPay;
-      overtimePay += result.overtimePay;
       holidayPay += result.holidayPay;
     }
+
+    final fixedOvertimeHours = settings.fixedOvertimeEnabled ? settings.fixedOvertimeHours : 0.0;
+    final paidOvertimeHours = overtimeHours - fixedOvertimeHours;
+    final paidOvertime = paidOvertimeHours > 0 ? paidOvertimeHours : 0.0;
+    overtimePay = paidOvertime * settings.overtimeRate;
+    final totalPay = settings.baseSalary + regularPay + overtimePay + holidayPay;
 
     return MonthStatistics(
       regularHours: regularHours,
       overtimeHours: overtimeHours,
+      fixedOvertimeHours: fixedOvertimeHours,
+      paidOvertimeHours: paidOvertime,
       holidayHours: holidayHours,
       totalHours: totalHours,
       regularPay: regularPay,
       overtimePay: overtimePay,
       holidayPay: holidayPay,
-      totalPay: regularPay + overtimePay + holidayPay,
+      baseSalary: settings.baseSalary,
+      totalPay: totalPay,
     );
   }
 }

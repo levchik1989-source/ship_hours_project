@@ -50,6 +50,18 @@ final class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                initialValue: settings.baseSalary.toString(),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: localizations.baseSalary),
+                onChanged: (value) {
+                  final parsed = double.tryParse(value.replaceAll(',', '.'));
+                  if (parsed != null && parsed >= 0) {
+                    controller.updateBaseSalary(parsed);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
                 initialValue: settings.overtimeRate.toString(),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: localizations.overtimeRate),
@@ -57,6 +69,30 @@ final class SettingsScreen extends StatelessWidget {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0) {
                     controller.updateOvertimeRate(parsed);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                initialValue: settings.holidayRate.toString(),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: localizations.holidayRate),
+                onChanged: (value) {
+                  final parsed = double.tryParse(value.replaceAll(',', '.'));
+                  if (parsed != null && parsed >= 0) {
+                    controller.updateHolidayRate(parsed);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                initialValue: settings.periodStartDay.toString(),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: localizations.periodStartDay),
+                onChanged: (value) {
+                  final parsed = int.tryParse(value);
+                  if (parsed != null && parsed >= 1 && parsed <= 31) {
+                    controller.updatePeriodStartDay(parsed);
                   }
                 },
               ),
@@ -87,15 +123,6 @@ final class SettingsScreen extends StatelessWidget {
               ),
               if (settings.fixedOvertimeEnabled) ...[
                 const SizedBox(height: 8),
-                SegmentedButton<double>(
-                  segments: const [
-                    ButtonSegment(value: 103, label: Text('103h')),
-                    ButtonSegment(value: 107, label: Text('107h')),
-                  ],
-                  selected: {settings.fixedOvertimeHours == 107 ? 107 : 103},
-                  onSelectionChanged: (values) => controller.updateFixedOvertimeHours(values.first),
-                ),
-                const SizedBox(height: 12),
                 TextFormField(
                   initialValue: settings.fixedOvertimeHours.toStringAsFixed(settings.fixedOvertimeHours % 1 == 0 ? 0 : 1),
                   keyboardType: TextInputType.number,

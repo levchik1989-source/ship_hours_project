@@ -11,4 +11,8 @@ final class AppConstants {
   static const double defaultRegularHours = 8;
   static const double defaultRegularRate = 0;
   static const double defaultOvertimeRate = 0;
+  static const double defaultHolidayRate = 0;
+  static const double defaultBaseSalary = 0;
+  static const double defaultFixedOvertimeHours = 0;
+  static const int defaultPeriodStartDay = 1;
 }

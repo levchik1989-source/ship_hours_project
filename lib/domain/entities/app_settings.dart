@@ -8,6 +8,9 @@ final class AppSettings {
     required this.regularHours,
     required this.regularRate,
     required this.overtimeRate,
+    required this.holidayRate,
+    required this.baseSalary,
+    required this.periodStartDay,
     required this.currency,
     required this.themeMode,
     required this.locale,
@@ -28,6 +31,9 @@ final class AppSettings {
       regularHours: AppConstants.defaultRegularHours,
       regularRate: AppConstants.defaultRegularRate,
       overtimeRate: AppConstants.defaultOvertimeRate,
+      holidayRate: AppConstants.defaultHolidayRate,
+      baseSalary: AppConstants.defaultBaseSalary,
+      periodStartDay: AppConstants.defaultPeriodStartDay,
       currency: CurrencyType.usd,
       themeMode: ThemeMode.system,
       locale: Locale('en'),
@@ -40,13 +46,16 @@ final class AppSettings {
       contractStartDate: null,
       contractEndDate: null,
       fixedOvertimeEnabled: false,
-      fixedOvertimeHours: 103,
+      fixedOvertimeHours: AppConstants.defaultFixedOvertimeHours,
     );
   }
 
   final double regularHours;
   final double regularRate;
   final double overtimeRate;
+  final double holidayRate;
+  final double baseSalary;
+  final int periodStartDay;
   final CurrencyType currency;
   final ThemeMode themeMode;
   final Locale locale;
@@ -65,6 +74,9 @@ final class AppSettings {
     double? regularHours,
     double? regularRate,
     double? overtimeRate,
+    double? holidayRate,
+    double? baseSalary,
+    int? periodStartDay,
     CurrencyType? currency,
     ThemeMode? themeMode,
     Locale? locale,
@@ -85,6 +97,9 @@ final class AppSettings {
       regularHours: regularHours ?? this.regularHours,
       regularRate: regularRate ?? this.regularRate,
       overtimeRate: overtimeRate ?? this.overtimeRate,
+      holidayRate: holidayRate ?? this.holidayRate,
+      baseSalary: baseSalary ?? this.baseSalary,
+      periodStartDay: periodStartDay ?? this.periodStartDay,
       currency: currency ?? this.currency,
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,

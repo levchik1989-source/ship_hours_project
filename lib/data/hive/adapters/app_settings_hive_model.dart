@@ -8,6 +8,9 @@ final class AppSettingsHiveModel {
     required this.regularHours,
     required this.regularRate,
     required this.overtimeRate,
+    required this.holidayRate,
+    required this.baseSalary,
+    required this.periodStartDay,
     required this.currency,
     required this.themeMode,
     required this.languageCode,
@@ -28,6 +31,9 @@ final class AppSettingsHiveModel {
       regularHours: settings.regularHours,
       regularRate: settings.regularRate,
       overtimeRate: settings.overtimeRate,
+      holidayRate: settings.holidayRate,
+      baseSalary: settings.baseSalary,
+      periodStartDay: settings.periodStartDay,
       currency: settings.currency.name,
       themeMode: settings.themeMode.name,
       languageCode: settings.locale.languageCode,
@@ -50,6 +56,9 @@ final class AppSettingsHiveModel {
       regularHours: ((map['regularHours'] ?? defaults.regularHours) as num).toDouble(),
       regularRate: ((map['regularRate'] ?? defaults.regularRate) as num).toDouble(),
       overtimeRate: ((map['overtimeRate'] ?? defaults.overtimeRate) as num).toDouble(),
+      holidayRate: ((map['holidayRate'] ?? defaults.holidayRate) as num).toDouble(),
+      baseSalary: ((map['baseSalary'] ?? defaults.baseSalary) as num).toDouble(),
+      periodStartDay: ((map['periodStartDay'] ?? defaults.periodStartDay) as num).toInt().clamp(1, 31).toInt(),
       currency: (map['currency'] ?? defaults.currency.name) as String,
       themeMode: (map['themeMode'] ?? defaults.themeMode.name) as String,
       languageCode: (map['languageCode'] ?? defaults.locale.languageCode) as String,
@@ -69,6 +78,9 @@ final class AppSettingsHiveModel {
   final double regularHours;
   final double regularRate;
   final double overtimeRate;
+  final double holidayRate;
+  final double baseSalary;
+  final int periodStartDay;
   final String currency;
   final String themeMode;
   final String languageCode;
@@ -88,6 +100,9 @@ final class AppSettingsHiveModel {
       regularHours: regularHours,
       regularRate: regularRate,
       overtimeRate: overtimeRate,
+      holidayRate: holidayRate,
+      baseSalary: baseSalary,
+      periodStartDay: periodStartDay,
       currency: CurrencyType.fromName(currency),
       themeMode: _themeModeFromName(themeMode),
       locale: Locale(languageCode),
@@ -109,6 +124,9 @@ final class AppSettingsHiveModel {
       'regularHours': regularHours,
       'regularRate': regularRate,
       'overtimeRate': overtimeRate,
+      'holidayRate': holidayRate,
+      'baseSalary': baseSalary,
+      'periodStartDay': periodStartDay,
       'currency': currency,
       'themeMode': themeMode,
       'languageCode': languageCode,

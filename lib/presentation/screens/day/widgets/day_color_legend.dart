@@ -21,7 +21,6 @@ final class DayColorLegend extends StatelessWidget {
             _LegendItem(color: const Color(0xFF2E7D32), label: l.regularShort),
             _LegendItem(color: const Color(0xFFFFA000), label: l.overtimeShort),
             _LegendItem(color: const Color(0xFFD84315), label: l.holidayShort),
-            _LegendItem(color: const Color(0xFF1976D2), label: l.nightShort),
             _LegendItem(color: Theme.of(context).colorScheme.surfaceContainerHighest, label: l.emptyShort),
           ],
         ),

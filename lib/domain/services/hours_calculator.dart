@@ -79,7 +79,7 @@ final class HoursCalculator {
     final totalHours = regularHours + overtimeHours + holidayHours;
     final regularPay = regularHours * settings.regularRate;
     final overtimePay = overtimeHours * settings.overtimeRate;
-    final holidayPay = holidayHours * settings.overtimeRate;
+    final holidayPay = holidayHours * settings.holidayRate;
 
     return HoursCalculationResult(
       regularHours: regularHours,
