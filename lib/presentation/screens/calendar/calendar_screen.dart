@@ -26,10 +26,12 @@ final class CalendarScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(localizations.calendar),
         centerTitle: true,
         actions: [
-          IconButton(
+          IconButton.filledTonal(
             tooltip: localizations.statistics,
             onPressed: () {
               Navigator.of(context).pushNamed(
@@ -39,7 +41,7 @@ final class CalendarScreen extends StatelessWidget {
             },
             icon: const Icon(Icons.bar_chart_rounded),
           ),
-          IconButton(
+          IconButton.filledTonal(
             tooltip: localizations.settings,
             onPressed: () {
               Navigator.of(context).pushNamed(AppRouter.settings);

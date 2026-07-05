@@ -19,7 +19,38 @@ final class SettingsScreen extends StatelessWidget {
     final settings = controller.settings;
 
     return Scaffold(
-      appBar: AppBar(title: Text(localizations.settings)),
+      appBar: AppBar(title: Text(localizations.settings), centerTitle: true),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 2,
+        onDestinationSelected: (index) {
+          if (index == 0) {
+            Navigator.of(context).pushReplacementNamed(AppRouter.calendar);
+          }
+          if (index == 1) {
+            Navigator.of(context).pushReplacementNamed(
+              AppRouter.statistics,
+              arguments: DateTime.now(),
+            );
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month_rounded),
+            label: 'Calendar',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart_rounded),
+            label: 'Statistics',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings_rounded),
+            label: 'Settings',
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
@@ -29,7 +60,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.regularHours.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.regularHours),
+                decoration:
+                    InputDecoration(labelText: localizations.regularHours),
                 onChanged: (value) {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0 && parsed <= 24) {
@@ -41,7 +73,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.regularRate.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.regularRate),
+                decoration:
+                    InputDecoration(labelText: localizations.regularRate),
                 onChanged: (value) {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0) {
@@ -53,7 +86,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.baseSalary.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.baseSalary),
+                decoration:
+                    InputDecoration(labelText: localizations.baseSalary),
                 onChanged: (value) {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0) {
@@ -65,7 +99,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.overtimeRate.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.overtimeRate),
+                decoration:
+                    InputDecoration(labelText: localizations.overtimeRate),
                 onChanged: (value) {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0) {
@@ -77,7 +112,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.holidayRate.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.holidayRate),
+                decoration:
+                    InputDecoration(labelText: localizations.holidayRate),
                 onChanged: (value) {
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
                   if (parsed != null && parsed >= 0) {
@@ -89,7 +125,8 @@ final class SettingsScreen extends StatelessWidget {
               TextFormField(
                 initialValue: settings.periodStartDay.toString(),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: localizations.periodStartDay),
+                decoration:
+                    InputDecoration(labelText: localizations.periodStartDay),
                 onChanged: (value) {
                   final parsed = int.tryParse(value);
                   if (parsed != null && parsed >= 1 && parsed <= 31) {
@@ -125,9 +162,11 @@ final class SettingsScreen extends StatelessWidget {
               if (settings.fixedOvertimeEnabled) ...[
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: settings.fixedOvertimeHours.toStringAsFixed(settings.fixedOvertimeHours % 1 == 0 ? 0 : 1),
+                  initialValue: settings.fixedOvertimeHours.toStringAsFixed(
+                      settings.fixedOvertimeHours % 1 == 0 ? 0 : 1),
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: localizations.fixedOvertimeHours),
+                  decoration: InputDecoration(
+                      labelText: localizations.fixedOvertimeHours),
                   onChanged: (value) {
                     final parsed = double.tryParse(value.replaceAll(',', '.'));
                     if (parsed != null && parsed >= 0) {
@@ -144,13 +183,16 @@ final class SettingsScreen extends StatelessWidget {
               if (settings.companyHolidays.isEmpty)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(localizations.noHolidays, style: Theme.of(context).textTheme.bodyMedium),
+                  child: Text(localizations.noHolidays,
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ),
               ...settings.companyHolidays.map((holiday) => ListTile(
                     dense: true,
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.celebration_outlined),
-                    title: Text(DateFormat.yMMMd(Localizations.localeOf(context).toLanguageTag()).format(holiday)),
+                    title: Text(DateFormat.yMMMd(
+                            Localizations.localeOf(context).toLanguageTag())
+                        .format(holiday)),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline),
                       onPressed: () => controller.removeCompanyHoliday(holiday),
@@ -173,9 +215,12 @@ final class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          CurrencySelector(value: settings.currency, onChanged: controller.updateCurrency),
-          ThemeSelector(value: settings.themeMode, onChanged: controller.updateThemeMode),
-          LanguageSelector(value: settings.locale, onChanged: controller.updateLocale),
+          CurrencySelector(
+              value: settings.currency, onChanged: controller.updateCurrency),
+          ThemeSelector(
+              value: settings.themeMode, onChanged: controller.updateThemeMode),
+          LanguageSelector(
+              value: settings.locale, onChanged: controller.updateLocale),
           Card(
             child: ListTile(
               leading: const Icon(Icons.info_outline),
@@ -205,7 +250,11 @@ final class _SettingsSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+            Text(title,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w800)),
             const SizedBox(height: 12),
             ...children,
           ],
@@ -216,7 +265,8 @@ final class _SettingsSection extends StatelessWidget {
 }
 
 final class _DatePickerTile extends StatelessWidget {
-  const _DatePickerTile({required this.label, required this.value, required this.onChanged});
+  const _DatePickerTile(
+      {required this.label, required this.value, required this.onChanged});
 
   final String label;
   final DateTime? value;
@@ -226,7 +276,8 @@ final class _DatePickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context).toLanguageTag();
-    final valueText = value == null ? l.notSet : DateFormat.yMMMd(locale).format(value!);
+    final valueText =
+        value == null ? l.notSet : DateFormat.yMMMd(locale).format(value!);
 
     return ListTile(
       dense: true,

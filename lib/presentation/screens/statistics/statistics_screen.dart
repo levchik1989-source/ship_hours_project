@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app/app_router.dart';
+
 import '../../../domain/services/statistics_calculator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
@@ -18,7 +20,8 @@ final class StatisticsScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final settings = context.watch<AppSettingsController>().settings;
     final calendarController = context.watch<CalendarController>();
-    final statistics = StatisticsCalculator.calculate(records: calendarController.records, settings: settings);
+    final statistics = StatisticsCalculator.calculate(
+        records: calendarController.records, settings: settings);
 
     return Scaffold(
       appBar: AppBar(title: Text(localizations.statistics)),
@@ -27,7 +30,8 @@ final class StatisticsScreen extends StatelessWidget {
         children: [
           StatisticsCard(statistics: statistics, settings: settings),
           const SizedBox(height: 12),
-          ExportCard(statistics: statistics, settings: settings, month: selectedMonth),
+          ExportCard(
+              statistics: statistics, settings: settings, month: selectedMonth),
         ],
       ),
     );
