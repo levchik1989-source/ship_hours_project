@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app/app_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
 import 'widgets/currency_selector.dart';
@@ -175,6 +176,15 @@ final class SettingsScreen extends StatelessWidget {
           CurrencySelector(value: settings.currency, onChanged: controller.updateCurrency),
           ThemeSelector(value: settings.themeMode, onChanged: controller.updateThemeMode),
           LanguageSelector(value: settings.locale, onChanged: controller.updateLocale),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: Text(localizations.about),
+              subtitle: const Text('Created by LEVCHIK'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).pushNamed(AppRouter.about),
+            ),
+          ),
         ],
       ),
     );

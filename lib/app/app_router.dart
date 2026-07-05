@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../presentation/screens/about/about_screen.dart';
 import '../presentation/screens/calendar/calendar_screen.dart';
 import '../presentation/screens/day/day_screen.dart';
 import '../presentation/screens/settings/settings_screen.dart';
@@ -12,6 +13,7 @@ final class AppRouter {
   static const String day = '/day';
   static const String statistics = '/statistics';
   static const String settings = '/settings';
+  static const String about = '/about';
 
   Route<void> onGenerateRoute(RouteSettings settings) {
     final routeName = settings.name ?? calendar;
@@ -32,6 +34,8 @@ final class AppRouter {
             );
           case AppRouter.settings:
             return const SettingsScreen();
+          case AppRouter.about:
+            return const AboutScreen();
           default:
             return const CalendarScreen();
         }
