@@ -37,7 +37,7 @@ final class CalendarDayTile extends StatelessWidget {
         _accentColor(calculation, isWeekend, isObservedHoliday, scheme);
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(18),
       onTap: isCurrentMonth
           ? () {
               Navigator.of(context).pushNamed(AppRouter.day, arguments: date);
@@ -50,7 +50,7 @@ final class CalendarDayTile extends StatelessWidget {
               : isWeekend
                   ? const Color(0xFF263238).withOpacity(0.55)
                   : scheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: accent.withOpacity(
               workedHours > 0 || isObservedHoliday ? 0.9 : 0.18,
@@ -61,7 +61,7 @@ final class CalendarDayTile extends StatelessWidget {
         child: Opacity(
           opacity: isCurrentMonth ? 1 : 0.35,
           child: Padding(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -114,15 +114,15 @@ final class _StatusDots extends StatelessWidget {
       if ((calculation?.holidayHours ?? 0) > 0) const Color(0xFFD84315),
     ];
 
-    if (dots.isEmpty) return const SizedBox(height: 6);
+    if (dots.isEmpty) return const SizedBox(height: 4);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (final color in dots)
           Container(
-            width: 6,
-            height: 6,
+            width: 5,
+            height: 5,
             margin: const EdgeInsets.symmetric(horizontal: 2),
             decoration: BoxDecoration(
               color: color,
