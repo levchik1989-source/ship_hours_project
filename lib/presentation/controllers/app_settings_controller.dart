@@ -36,6 +36,9 @@ final class AppSettingsController extends ChangeNotifier {
   Future<void> updateLocale(Locale value) async => _save(_settings.copyWith(locale: value));
   Future<void> updateWeekendOvertimeEnabled(bool value) async => _save(_settings.copyWith(weekendOvertimeEnabled: value));
   Future<void> updateMoveWeekendHolidayToNextWorkday(bool value) async => _save(_settings.copyWith(moveWeekendHolidayToNextWorkday: value));
+
+  Future<void> updateFixedOvertimeEnabled(bool value) async => _save(_settings.copyWith(fixedOvertimeEnabled: value));
+  Future<void> updateFixedOvertimeHours(double value) async => _save(_settings.copyWith(fixedOvertimeHours: value));
   Future<void> updateCompanyName(String value) async => _save(_settings.copyWith(companyName: value));
   Future<void> updateVesselName(String value) async => _save(_settings.copyWith(vesselName: value));
   Future<void> updateRank(String value) async => _save(_settings.copyWith(rank: value));

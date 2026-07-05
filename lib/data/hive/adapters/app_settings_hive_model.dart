@@ -19,6 +19,8 @@ final class AppSettingsHiveModel {
     required this.rank,
     required this.contractStartDate,
     required this.contractEndDate,
+    required this.fixedOvertimeEnabled,
+    required this.fixedOvertimeHours,
   });
 
   factory AppSettingsHiveModel.fromEntity(AppSettings settings) {
@@ -37,6 +39,8 @@ final class AppSettingsHiveModel {
       rank: settings.rank,
       contractStartDate: settings.contractStartDate == null ? null : _dateToKey(settings.contractStartDate!),
       contractEndDate: settings.contractEndDate == null ? null : _dateToKey(settings.contractEndDate!),
+      fixedOvertimeEnabled: settings.fixedOvertimeEnabled,
+      fixedOvertimeHours: settings.fixedOvertimeHours,
     );
   }
 
@@ -57,6 +61,8 @@ final class AppSettingsHiveModel {
       rank: (map['rank'] ?? '') as String,
       contractStartDate: map['contractStartDate'] as String?,
       contractEndDate: map['contractEndDate'] as String?,
+      fixedOvertimeEnabled: (map['fixedOvertimeEnabled'] ?? defaults.fixedOvertimeEnabled) as bool,
+      fixedOvertimeHours: ((map['fixedOvertimeHours'] ?? defaults.fixedOvertimeHours) as num).toDouble(),
     );
   }
 
@@ -74,6 +80,8 @@ final class AppSettingsHiveModel {
   final String rank;
   final String? contractStartDate;
   final String? contractEndDate;
+  final bool fixedOvertimeEnabled;
+  final double fixedOvertimeHours;
 
   AppSettings toEntity() {
     return AppSettings(
@@ -91,6 +99,8 @@ final class AppSettingsHiveModel {
       rank: rank,
       contractStartDate: contractStartDate == null ? null : _dateFromKey(contractStartDate!),
       contractEndDate: contractEndDate == null ? null : _dateFromKey(contractEndDate!),
+      fixedOvertimeEnabled: fixedOvertimeEnabled,
+      fixedOvertimeHours: fixedOvertimeHours,
     );
   }
 
@@ -110,6 +120,8 @@ final class AppSettingsHiveModel {
       'rank': rank,
       'contractStartDate': contractStartDate,
       'contractEndDate': contractEndDate,
+      'fixedOvertimeEnabled': fixedOvertimeEnabled,
+      'fixedOvertimeHours': fixedOvertimeHours,
     };
   }
 

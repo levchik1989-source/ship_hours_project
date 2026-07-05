@@ -23,31 +23,6 @@ final class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         children: [
           _SettingsSection(
-            title: localizations.contract,
-            children: [
-              TextFormField(
-                initialValue: settings.companyName,
-                decoration: InputDecoration(labelText: localizations.company),
-                onChanged: controller.updateCompanyName,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                initialValue: settings.vesselName,
-                decoration: InputDecoration(labelText: localizations.vessel),
-                onChanged: controller.updateVesselName,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                initialValue: settings.rank,
-                decoration: InputDecoration(labelText: localizations.rank),
-                onChanged: controller.updateRank,
-              ),
-              const SizedBox(height: 12),
-              _DatePickerTile(label: localizations.contractStart, value: settings.contractStartDate, onChanged: controller.updateContractStartDate),
-              _DatePickerTile(label: localizations.contractEnd, value: settings.contractEndDate, onChanged: controller.updateContractEndDate),
-            ],
-          ),
-          _SettingsSection(
             title: localizations.companyRules,
             children: [
               TextFormField(
@@ -98,6 +73,41 @@ final class SettingsScreen extends StatelessWidget {
                 title: Text(localizations.moveWeekendHoliday),
                 onChanged: controller.updateMoveWeekendHolidayToNextWorkday,
               ),
+            ],
+          ),
+          _SettingsSection(
+            title: localizations.fixedOvertime,
+            children: [
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: settings.fixedOvertimeEnabled,
+                title: Text(localizations.fixedOvertimeEnabled),
+                subtitle: Text(localizations.fixedOvertimeHint),
+                onChanged: controller.updateFixedOvertimeEnabled,
+              ),
+              if (settings.fixedOvertimeEnabled) ...[
+                const SizedBox(height: 8),
+                SegmentedButton<double>(
+                  segments: const [
+                    ButtonSegment(value: 103, label: Text('103h')),
+                    ButtonSegment(value: 107, label: Text('107h')),
+                  ],
+                  selected: {settings.fixedOvertimeHours == 107 ? 107 : 103},
+                  onSelectionChanged: (values) => controller.updateFixedOvertimeHours(values.first),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  initialValue: settings.fixedOvertimeHours.toStringAsFixed(settings.fixedOvertimeHours % 1 == 0 ? 0 : 1),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(labelText: localizations.fixedOvertimeHours),
+                  onChanged: (value) {
+                    final parsed = double.tryParse(value.replaceAll(',', '.'));
+                    if (parsed != null && parsed >= 0) {
+                      controller.updateFixedOvertimeHours(parsed);
+                    }
+                  },
+                ),
+              ],
             ],
           ),
           _SettingsSection(

@@ -8,7 +8,8 @@ import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
 import '../../controllers/day_controller.dart';
 import 'widgets/day_summary_card.dart';
-import 'widgets/hour_row.dart';
+import 'widgets/day_color_legend.dart';
+import 'widgets/day_grid.dart';
 
 final class DayScreen extends StatelessWidget {
   const DayScreen({required this.selectedDate, super.key});
@@ -61,28 +62,21 @@ final class _DayScreenContent extends StatelessWidget {
               children: [
                 DaySummaryCard(calculation: calculation, settings: settings),
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-                    itemCount: 24,
-                    itemBuilder: (context, hour) {
-                      return HourRow(
-                        hour: hour,
-                        firstCategory: calculation.slotCategories[hour * 2],
-                        secondCategory: calculation.slotCategories[hour * 2 + 1],
-                        onFirstTap: () async {
-                          await controller.toggleSlot(hour * 2);
-                          if (context.mounted) {
-                            await context.read<CalendarController>().refresh();
-                          }
-                        },
-                        onSecondTap: () async {
-                          await controller.toggleSlot(hour * 2 + 1);
-                          if (context.mounted) {
-                            await context.read<CalendarController>().refresh();
-                          }
-                        },
-                      );
-                    },
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: DayGrid(
+                          slotCategories: calculation.slotCategories,
+                          onSlotTap: (index) async {
+                            await controller.toggleSlot(index);
+                            if (context.mounted) {
+                              await context.read<CalendarController>().refresh();
+                            }
+                          },
+                        ),
+                      ),
+                      const DayColorLegend(),
+                    ],
                   ),
                 ),
               ],

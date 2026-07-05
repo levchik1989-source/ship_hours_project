@@ -111,4 +111,32 @@ final class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get observedHoliday => 'Observed holiday';
+
+
+  @override
+  String get regularShort => 'Regular';
+
+  @override
+  String get overtimeShort => 'OT';
+
+  @override
+  String get holidayShort => 'Holiday';
+
+  @override
+  String get nightShort => 'Night';
+
+  @override
+  String get emptyShort => 'Empty';
+
+  @override
+  String get fixedOvertime => 'Fixed overtime';
+
+  @override
+  String get fixedOvertimeEnabled => 'Use fixed monthly overtime';
+
+  @override
+  String get fixedOvertimeHours => 'Fixed overtime hours per month';
+
+  @override
+  String get fixedOvertimeHint => 'For companies with guaranteed monthly OT, for example 103h or 107h.';
 }

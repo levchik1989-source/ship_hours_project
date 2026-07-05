@@ -19,6 +19,8 @@ final class AppSettings {
     required this.rank,
     required this.contractStartDate,
     required this.contractEndDate,
+    required this.fixedOvertimeEnabled,
+    required this.fixedOvertimeHours,
   });
 
   factory AppSettings.defaults() {
@@ -37,6 +39,8 @@ final class AppSettings {
       rank: '',
       contractStartDate: null,
       contractEndDate: null,
+      fixedOvertimeEnabled: false,
+      fixedOvertimeHours: 103,
     );
   }
 
@@ -54,6 +58,8 @@ final class AppSettings {
   final String rank;
   final DateTime? contractStartDate;
   final DateTime? contractEndDate;
+  final bool fixedOvertimeEnabled;
+  final double fixedOvertimeHours;
 
   AppSettings copyWith({
     double? regularHours,
@@ -72,6 +78,8 @@ final class AppSettings {
     bool clearContractStartDate = false,
     DateTime? contractEndDate,
     bool clearContractEndDate = false,
+    bool? fixedOvertimeEnabled,
+    double? fixedOvertimeHours,
   }) {
     return AppSettings(
       regularHours: regularHours ?? this.regularHours,
@@ -88,6 +96,8 @@ final class AppSettings {
       rank: rank ?? this.rank,
       contractStartDate: clearContractStartDate ? null : contractStartDate ?? this.contractStartDate,
       contractEndDate: clearContractEndDate ? null : contractEndDate ?? this.contractEndDate,
+      fixedOvertimeEnabled: fixedOvertimeEnabled ?? this.fixedOvertimeEnabled,
+      fixedOvertimeHours: fixedOvertimeHours ?? this.fixedOvertimeHours,
     );
   }
 }

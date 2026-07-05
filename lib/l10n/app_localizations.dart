@@ -79,6 +79,15 @@ abstract class AppLocalizations {
   String get contractEnd => 'Contract end';
   String get notSet => 'Not set';
   String get observedHoliday => 'Observed holiday';
+  String get regularShort => 'Regular';
+  String get overtimeShort => 'OT';
+  String get holidayShort => 'Holiday';
+  String get nightShort => 'Night';
+  String get emptyShort => 'Empty';
+  String get fixedOvertime => 'Fixed overtime';
+  String get fixedOvertimeEnabled => 'Use fixed monthly overtime';
+  String get fixedOvertimeHours => 'Fixed overtime hours per month';
+  String get fixedOvertimeHint => 'For companies with guaranteed monthly OT, for example 103h or 107h.';
 }
 
 final class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

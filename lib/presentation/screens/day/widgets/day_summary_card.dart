@@ -22,15 +22,6 @@ final class DaySummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (settings.companyName.isNotEmpty || settings.vesselName.isNotEmpty || settings.rank.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  [settings.companyName, settings.vesselName, settings.rank].where((value) => value.trim().isNotEmpty).join(' • '),
-                  style: Theme.of(context).textTheme.labelLarge,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
             Row(
               children: [
                 Expanded(child: _metric(context, l.totalHours, calculation.totalHours.toStringAsFixed(1), Icons.schedule)),

@@ -39,4 +39,14 @@ final class AppLocalizationsRu extends AppLocalizations {
   @override String get contractEnd => 'Конец контракта';
   @override String get notSet => 'Не указано';
   @override String get observedHoliday => 'Перенесённый праздник';
+
+  @override String get regularShort => 'Обычные';
+  @override String get overtimeShort => 'OT';
+  @override String get holidayShort => 'Праздник';
+  @override String get nightShort => 'Ночные';
+  @override String get emptyShort => 'Пусто';
+  @override String get fixedOvertime => 'Фиксированный овертайм';
+  @override String get fixedOvertimeEnabled => 'Использовать фиксированный месячный OT';
+  @override String get fixedOvertimeHours => 'Фиксированные часы OT в месяц';
+  @override String get fixedOvertimeHint => 'Для компаний с гарантированным месячным OT, например 103ч или 107ч.';
 }
