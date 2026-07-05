@@ -30,23 +30,37 @@ final class CalendarScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         title: Text(localizations.calendar),
         centerTitle: true,
-        actions: [
-          IconButton.filledTonal(
-            tooltip: localizations.statistics,
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                AppRouter.statistics,
-                arguments: controller.selectedMonth,
-              );
-            },
-            icon: const Icon(Icons.bar_chart_rounded),
+      ),
+      bottomNavigationBar: NavigationBar(
+        height: 72,
+        selectedIndex: 0,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        onDestinationSelected: (index) {
+          if (index == 1) {
+            Navigator.of(context).pushReplacementNamed(
+              AppRouter.statistics,
+              arguments: controller.selectedMonth,
+            );
+          }
+          if (index == 2) {
+            Navigator.of(context).pushReplacementNamed(AppRouter.settings);
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month_rounded),
+            label: 'Calendar',
           ),
-          IconButton.filledTonal(
-            tooltip: localizations.settings,
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRouter.settings);
-            },
-            icon: const Icon(Icons.settings_rounded),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart_rounded),
+            label: 'Statistics',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings_rounded),
+            label: 'Settings',
           ),
         ],
       ),
