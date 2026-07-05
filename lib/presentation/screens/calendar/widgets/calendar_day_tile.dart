@@ -25,11 +25,16 @@ final class CalendarDayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isCurrentMonth = MonthUtils.isCurrentMonth(day: date, month: month);
     final workedHours = record?.totalHours ?? 0;
-    final calculation = record == null ? null : HoursCalculator.calculate(record: record!, settings: settings);
+    final calculation = record == null
+        ? null
+        : HoursCalculator.calculate(record: record!, settings: settings);
+
     final scheme = Theme.of(context).colorScheme;
     final isWeekend = CompanyRulesService.isWeekend(date);
-    final isObservedHoliday = CompanyRulesService.isObservedHoliday(date, settings) && !isWeekend;
-    final accent = _accentColor(calculation, isWeekend, isObservedHoliday, scheme);
+    final isObservedHoliday =
+        CompanyRulesService.isObservedHoliday(date, settings) && !isWeekend;
+    final accent =
+        _accentColor(calculation, isWeekend, isObservedHoliday, scheme);
 
     return InkWell(
       borderRadius: BorderRadius.circular(12),
@@ -46,7 +51,12 @@ final class CalendarDayTile extends StatelessWidget {
                   ? const Color(0xFF263238).withOpacity(0.55)
                   : scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: accent.withOpacity(workedHours > 0 || isObservedHoliday ? 0.9 : 0.18), width: workedHours > 0 || isObservedHoliday ? 1.3 : 1),
+          border: Border.all(
+            color: accent.withOpacity(
+              workedHours > 0 || isObservedHoliday ? 0.9 : 0.18,
+            ),
+            width: workedHours > 0 || isObservedHoliday ? 1.3 : 1,
+          ),
         ),
         child: Opacity(
           opacity: isCurrentMonth ? 1 : 0.35,
@@ -55,9 +65,14 @@ final class CalendarDayTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(date.day.toString(), style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800)),
-                if (workedHours > 0) Text('${workedHours.toStringAsFixed(1)}h', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: accent, fontWeight: FontWeight.w700)),
-                if (workedHours == 0 && isObservedHoliday) Icon(Icons.celebration_outlined, size: 13, color: accent),
+                Text(
+                  date.day.toString(),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+                const Spacer(),
+                _StatusDots(calculation: calculation),
               ],
             ),
           ),
@@ -66,11 +81,55 @@ final class CalendarDayTile extends StatelessWidget {
     );
   }
 
-  Color _accentColor(HoursCalculationResult? calculation, bool isWeekend, bool isObservedHoliday, ColorScheme scheme) {
-    if (isObservedHoliday || (calculation?.holidayHours ?? 0) > 0) return const Color(0xFFD84315);
-    if ((calculation?.overtimeHours ?? 0) > 0) return const Color(0xFFFFA000);
-    if ((calculation?.regularHours ?? 0) > 0) return const Color(0xFF2E7D32);
+  Color _accentColor(
+    HoursCalculationResult? calculation,
+    bool isWeekend,
+    bool isObservedHoliday,
+    ColorScheme scheme,
+  ) {
+    if (isObservedHoliday || (calculation?.holidayHours ?? 0) > 0) {
+      return const Color(0xFFD84315);
+    }
+    if ((calculation?.overtimeHours ?? 0) > 0) {
+      return const Color(0xFFFFA000);
+    }
+    if ((calculation?.regularHours ?? 0) > 0) {
+      return const Color(0xFF2E7D32);
+    }
     if (isWeekend) return const Color(0xFF546E7A);
     return scheme.outlineVariant;
+  }
+}
+
+final class _StatusDots extends StatelessWidget {
+  const _StatusDots({required this.calculation});
+
+  final HoursCalculationResult? calculation;
+
+  @override
+  Widget build(BuildContext context) {
+    final dots = <Color>[
+      if ((calculation?.regularHours ?? 0) > 0) const Color(0xFF2E7D32),
+      if ((calculation?.overtimeHours ?? 0) > 0) const Color(0xFFFFA000),
+      if ((calculation?.holidayHours ?? 0) > 0) const Color(0xFFD84315),
+    ];
+
+    if (dots.isEmpty) return const SizedBox(height: 6);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (final color in dots)
+          Container(
+            width: 6,
+            height: 6,
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+      ],
+    );
   }
 }

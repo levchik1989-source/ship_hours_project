@@ -8,7 +8,6 @@ import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
 import '../../controllers/day_controller.dart';
 import 'widgets/day_summary_card.dart';
-import 'widgets/day_color_legend.dart';
 import 'widgets/day_grid.dart';
 
 final class DayScreen extends StatelessWidget {
@@ -38,7 +37,9 @@ final class _DayScreenContent extends StatelessWidget {
     final settings = context.watch<AppSettingsController>().settings;
     final record = controller.record;
 
-    final calculation = record == null ? null : HoursCalculator.calculate(record: record, settings: settings);
+    final calculation = record == null
+        ? null
+        : HoursCalculator.calculate(record: record, settings: settings);
 
     return Scaffold(
       appBar: AppBar(
@@ -70,12 +71,13 @@ final class _DayScreenContent extends StatelessWidget {
                           onSlotTap: (index) async {
                             await controller.toggleSlot(index);
                             if (context.mounted) {
-                              await context.read<CalendarController>().refresh();
+                              await context
+                                  .read<CalendarController>()
+                                  .refresh();
                             }
                           },
                         ),
                       ),
-                      const DayColorLegend(),
                     ],
                   ),
                 ),
