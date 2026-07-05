@@ -20,7 +20,16 @@ final class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(localizations.settings), centerTitle: true),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: SafeArea(
+      minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(24)),
+        child: NavigationBar(
+        height: 72,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        indicatorColor: Theme.of(context).colorScheme.primaryContainer,
+        elevation: 6,
+        animationDuration: const Duration(milliseconds: 250),
         selectedIndex: 2,
         onDestinationSelected: (index) {
           if (index == 0) {
@@ -33,6 +42,7 @@ final class SettingsScreen extends StatelessWidget {
             );
           }
         },
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.calendar_month_outlined),
@@ -50,8 +60,10 @@ final class SettingsScreen extends StatelessWidget {
             label: 'Settings',
           ),
         ],
+        ),
       ),
-      body: ListView(
+    ),
+    body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
           _SettingsSection(

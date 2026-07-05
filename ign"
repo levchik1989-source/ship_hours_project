@@ -1,0 +1,50 @@
+[1mdiff --git a/lib/presentation/screens/calendar/widgets/calendar_day_tile.dart b/lib/presentation/screens/calendar/widgets/calendar_day_tile.dart[m
+[1mindex 151929f..b224cab 100644[m
+[1m--- a/lib/presentation/screens/calendar/widgets/calendar_day_tile.dart[m
+[1m+++ b/lib/presentation/screens/calendar/widgets/calendar_day_tile.dart[m
+[36m@@ -37,7 +37,7 @@[m [mfinal class CalendarDayTile extends StatelessWidget {[m
+         _accentColor(calculation, isWeekend, isObservedHoliday, scheme);[m
+ [m
+     return InkWell([m
+[31m-      borderRadius: BorderRadius.circular(12),[m
+[32m+[m[32m      borderRadius: BorderRadius.circular(18),[m
+       onTap: isCurrentMonth[m
+           ? () {[m
+               Navigator.of(context).pushNamed(AppRouter.day, arguments: date);[m
+[36m@@ -50,7 +50,7 @@[m [mfinal class CalendarDayTile extends StatelessWidget {[m
+               : isWeekend[m
+                   ? const Color(0xFF263238).withOpacity(0.55)[m
+                   : scheme.surfaceContainerHighest,[m
+[31m-          borderRadius: BorderRadius.circular(12),[m
+[32m+[m[32m          borderRadius: BorderRadius.circular(18),[m
+           border: Border.all([m
+             color: accent.withOpacity([m
+               workedHours > 0 || isObservedHoliday ? 0.9 : 0.18,[m
+[36m@@ -61,7 +61,7 @@[m [mfinal class CalendarDayTile extends StatelessWidget {[m
+         child: Opacity([m
+           opacity: isCurrentMonth ? 1 : 0.35,[m
+           child: Padding([m
+[31m-            padding: const EdgeInsets.all(4),[m
+[32m+[m[32m            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),[m
+             child: Column([m
+               mainAxisAlignment: MainAxisAlignment.center,[m
+               children: [[m
+[36m@@ -114,15 +114,15 @@[m [mfinal class _StatusDots extends StatelessWidget {[m
+       if ((calculation?.holidayHours ?? 0) > 0) const Color(0xFFD84315),[m
+     ];[m
+ [m
+[31m-    if (dots.isEmpty) return const SizedBox(height: 6);[m
+[32m+[m[32m    if (dots.isEmpty) return const SizedBox(height: 4);[m
+ [m
+     return Row([m
+       mainAxisAlignment: MainAxisAlignment.center,[m
+       children: [[m
+         for (final color in dots)[m
+           Container([m
+[31m-            width: 6,[m
+[31m-            height: 6,[m
+[32m+[m[32m            width: 5,[m
+[32m+[m[32m            height: 5,[m
+             margin: const EdgeInsets.symmetric(horizontal: 2),[m
+             decoration: BoxDecoration([m
+               color: color,[m
