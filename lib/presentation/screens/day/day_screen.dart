@@ -59,29 +59,26 @@ final class _DayScreenContent extends StatelessWidget {
       ),
       body: controller.isLoading || record == null || calculation == null
           ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                DaySummaryCard(calculation: calculation, settings: settings),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: DayGrid(
-                          slotCategories: calculation.slotCategories,
-                          onSlotTap: (index) async {
-                            await controller.toggleSlot(index);
-                            if (context.mounted) {
-                              await context
-                                  .read<CalendarController>()
-                                  .refresh();
-                            }
-                          },
-                        ),
-                      ),
-                    ],
+          : SafeArea(
+              child: ListView(
+                padding: const EdgeInsets.only(bottom: 24),
+                children: [
+                  DaySummaryCard(
+                    calculation: calculation,
+                    settings: settings,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  DayGrid(
+                    slotCategories: calculation.slotCategories,
+                    onSlotTap: (index) async {
+                      await controller.toggleSlot(index);
+                      if (context.mounted) {
+                        await context.read<CalendarController>().refresh();
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
     );
   }
