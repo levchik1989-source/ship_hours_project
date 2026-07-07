@@ -8,6 +8,7 @@ import '../../controllers/app_settings_controller.dart';
 import 'widgets/currency_selector.dart';
 import 'widgets/language_selector.dart';
 import 'widgets/theme_selector.dart';
+import '../salary_profiles/salary_profiles_screen.dart';
 
 final class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -21,49 +22,49 @@ final class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(localizations.settings), centerTitle: true),
       bottomNavigationBar: SafeArea(
-      minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(24)),
-        child: NavigationBar(
-        height: 72,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        indicatorColor: Theme.of(context).colorScheme.primaryContainer,
-        elevation: 6,
-        animationDuration: const Duration(milliseconds: 250),
-        selectedIndex: 2,
-        onDestinationSelected: (index) {
-          if (index == 0) {
-            Navigator.of(context).pushReplacementNamed(AppRouter.calendar);
-          }
-          if (index == 1) {
-            Navigator.of(context).pushReplacementNamed(
-              AppRouter.statistics,
-              arguments: DateTime.now(),
-            );
-          }
-        },
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month_rounded),
-            label: 'Calendar',
+        minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
+          child: NavigationBar(
+            height: 72,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            indicatorColor: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 6,
+            animationDuration: const Duration(milliseconds: 250),
+            selectedIndex: 2,
+            onDestinationSelected: (index) {
+              if (index == 0) {
+                Navigator.of(context).pushReplacementNamed(AppRouter.calendar);
+              }
+              if (index == 1) {
+                Navigator.of(context).pushReplacementNamed(
+                  AppRouter.statistics,
+                  arguments: DateTime.now(),
+                );
+              }
+            },
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.calendar_month_outlined),
+                selectedIcon: Icon(Icons.calendar_month_rounded),
+                label: 'Calendar',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.bar_chart_outlined),
+                selectedIcon: Icon(Icons.bar_chart_rounded),
+                label: 'Statistics',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(Icons.settings_rounded),
+                label: 'Settings',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart_outlined),
-            selectedIcon: Icon(Icons.bar_chart_rounded),
-            label: 'Statistics',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
         ),
       ),
-    ),
-    body: ListView(
+      body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
           _SettingsSection(
@@ -233,6 +234,21 @@ final class SettingsScreen extends StatelessWidget {
               value: settings.themeMode, onChanged: controller.updateThemeMode),
           LanguageSelector(
               value: settings.locale, onChanged: controller.updateLocale),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.badge_outlined),
+              title: const Text('Salary Profiles'),
+              subtitle: const Text('Create and manage salary profiles'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const SalaryProfilesScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
           Card(
             child: ListTile(
               leading: const Icon(Icons.info_outline),

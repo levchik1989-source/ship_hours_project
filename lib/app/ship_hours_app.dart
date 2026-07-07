@@ -5,9 +5,12 @@ import 'package:provider/provider.dart';
 import '../core/theme/app_theme.dart';
 import '../domain/repositories/settings_repository.dart';
 import '../domain/repositories/work_hours_repository.dart';
+import '../data/salary_profiles/in_memory_salary_profile_repository.dart';
+import '../domain/repositories/salary_profile_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../presentation/controllers/app_settings_controller.dart';
 import '../presentation/controllers/calendar_controller.dart';
+import '../presentation/controllers/salary_profile_controller.dart';
 import 'app_bootstrap.dart';
 import 'app_router.dart';
 
@@ -27,12 +30,20 @@ final class ShipHoursApp extends StatelessWidget {
         Provider<SettingsRepository>.value(
           value: dependencies.settingsRepository,
         ),
+        Provider<SalaryProfileRepository>(
+          create: (_) => InMemorySalaryProfileRepository(),
+        ),
         Provider<WorkHoursRepository>.value(
           value: dependencies.workHoursRepository,
         ),
         ChangeNotifierProvider<AppSettingsController>(
           create: (_) => AppSettingsController(
             repository: dependencies.settingsRepository,
+          )..load(),
+        ),
+        ChangeNotifierProvider<SalaryProfileController>(
+          create: (context) => SalaryProfileController(
+            repository: context.read<SalaryProfileRepository>(),
           )..load(),
         ),
         ChangeNotifierProvider<CalendarController>(

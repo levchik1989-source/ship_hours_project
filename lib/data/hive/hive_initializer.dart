@@ -3,19 +3,32 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../core/constants/hive_boxes.dart';
 
 final class HiveDatabase {
-  const HiveDatabase({required this.settingsBox, required this.dayRecordsBox});
+  const HiveDatabase(
+      {required this.settingsBox,
+      required this.dayRecordsBox,
+      required this.salaryProfilesBox});
 
   final Box<Map<dynamic, dynamic>> settingsBox;
   final Box<Map<dynamic, dynamic>> dayRecordsBox;
+  final Box<Map<dynamic, dynamic>> salaryProfilesBox;
 }
 
 final class HiveInitializer {
   Future<HiveDatabase> initialize() async {
     await Hive.initFlutter();
 
-    final settingsBox = await Hive.openBox<Map<dynamic, dynamic>>(HiveBoxes.settings);
-    final dayRecordsBox = await Hive.openBox<Map<dynamic, dynamic>>(HiveBoxes.dayRecords);
+    final settingsBox =
+        await Hive.openBox<Map<dynamic, dynamic>>(HiveBoxes.settings);
+    final dayRecordsBox =
+        await Hive.openBox<Map<dynamic, dynamic>>(HiveBoxes.dayRecords);
 
-    return HiveDatabase(settingsBox: settingsBox, dayRecordsBox: dayRecordsBox);
+    final salaryProfilesBox =
+        await Hive.openBox<Map<dynamic, dynamic>>(HiveBoxes.salaryProfiles);
+
+    return HiveDatabase(
+      settingsBox: settingsBox,
+      dayRecordsBox: dayRecordsBox,
+      salaryProfilesBox: salaryProfilesBox,
+    );
   }
 }
