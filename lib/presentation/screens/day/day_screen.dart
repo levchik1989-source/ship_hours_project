@@ -63,6 +63,30 @@ final class _DayScreenContent extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.only(bottom: 24),
                 children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SegmentedButton<bool>(
+                        segments: const [
+                          ButtonSegment(
+                            value: true,
+                            label: Text('UK'),
+                            icon: Icon(Icons.flag_outlined),
+                          ),
+                          ButtonSegment(
+                            value: false,
+                            label: Text('Non-UK'),
+                            icon: Icon(Icons.public_outlined),
+                          ),
+                        ],
+                        selected: {controller.isUkWatersMode},
+                        onSelectionChanged: (value) {
+                          controller.updateIsUkWatersMode(value.first);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   DaySummaryCard(
                     calculation: calculation,
                     settings: settings,
