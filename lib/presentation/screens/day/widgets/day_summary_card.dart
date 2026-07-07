@@ -58,31 +58,63 @@ final class DaySummaryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             ),
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: _SmallMetric(
-                    title: l.regularHours,
-                    value: calculation.regularHours,
-                    color: const Color(0xFF22C55E),
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _SmallMetric(
+                        title: 'UK Regular',
+                        value: calculation.ukRegularHours,
+                        color: const Color(0xFF22C55E),
+                      ),
+                    ),
+                    const _Divider(),
+                    Expanded(
+                      child: _SmallMetric(
+                        title: 'Non-UK Regular',
+                        value: calculation.nonUkRegularHours,
+                        color: const Color(0xFF38BDF8),
+                      ),
+                    ),
+                  ],
                 ),
-                _Divider(),
-                Expanded(
-                  child: _SmallMetric(
-                    title: l.overtimeHours,
-                    value: calculation.overtimeHours,
-                    color: const Color(0xFFFF9800),
-                  ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _SmallMetric(
+                        title: 'UK OT',
+                        value: calculation.ukOvertimeHours,
+                        color: const Color(0xFFFF9800),
+                      ),
+                    ),
+                    const _Divider(),
+                    Expanded(
+                      child: _SmallMetric(
+                        title: 'Non-UK OT',
+                        value: calculation.nonUkOvertimeHours,
+                        color: const Color(0xFFFFC107),
+                      ),
+                    ),
+                    const _Divider(),
+                    Expanded(
+                      child: _SmallMetric(
+                        title: 'Rest',
+                        value: calculation.restHours,
+                        color: const Color(0xFF9CA3AF),
+                      ),
+                    ),
+                  ],
                 ),
-                _Divider(),
-                Expanded(
-                  child: _SmallMetric(
+                if (calculation.holidayHours > 0) ...[
+                  const SizedBox(height: 14),
+                  _SmallMetric(
                     title: l.holidayHours,
                     value: calculation.holidayHours,
                     color: const Color(0xFFFF3B1F),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -121,10 +153,7 @@ final class _BigMetricCard extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            accent.withValues(alpha: 0.25),
-            const Color(0xFF071827),
-          ],
+          colors: [accent.withValues(alpha: 0.25), const Color(0xFF071827)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -208,6 +237,8 @@ final class _SmallMetric extends StatelessWidget {
 }
 
 final class _Divider extends StatelessWidget {
+  const _Divider();
+
   @override
   Widget build(BuildContext context) {
     return Container(
