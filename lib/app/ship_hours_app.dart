@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../core/theme/app_theme.dart';
 import '../domain/repositories/settings_repository.dart';
 import '../domain/repositories/work_hours_repository.dart';
-import '../data/salary_profiles/in_memory_salary_profile_repository.dart';
 import '../domain/repositories/salary_profile_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../presentation/controllers/app_settings_controller.dart';
@@ -30,8 +29,8 @@ final class ShipHoursApp extends StatelessWidget {
         Provider<SettingsRepository>.value(
           value: dependencies.settingsRepository,
         ),
-        Provider<SalaryProfileRepository>(
-          create: (_) => InMemorySalaryProfileRepository(),
+        Provider<SalaryProfileRepository>.value(
+          value: dependencies.salaryProfileRepository,
         ),
         Provider<WorkHoursRepository>.value(
           value: dependencies.workHoursRepository,
