@@ -84,58 +84,6 @@ final class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               TextFormField(
-                initialValue: settings.regularRate.toString(),
-                keyboardType: TextInputType.number,
-                decoration:
-                    InputDecoration(labelText: localizations.regularRate),
-                onChanged: (value) {
-                  final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed != null && parsed >= 0) {
-                    controller.updateRegularRate(parsed);
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                initialValue: settings.baseSalary.toString(),
-                keyboardType: TextInputType.number,
-                decoration:
-                    InputDecoration(labelText: localizations.baseSalary),
-                onChanged: (value) {
-                  final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed != null && parsed >= 0) {
-                    controller.updateBaseSalary(parsed);
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                initialValue: settings.overtimeRate.toString(),
-                keyboardType: TextInputType.number,
-                decoration:
-                    InputDecoration(labelText: localizations.overtimeRate),
-                onChanged: (value) {
-                  final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed != null && parsed >= 0) {
-                    controller.updateOvertimeRate(parsed);
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                initialValue: settings.holidayRate.toString(),
-                keyboardType: TextInputType.number,
-                decoration:
-                    InputDecoration(labelText: localizations.holidayRate),
-                onChanged: (value) {
-                  final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed != null && parsed >= 0) {
-                    controller.updateHolidayRate(parsed);
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
                 initialValue: settings.periodStartDay.toString(),
                 keyboardType: TextInputType.number,
                 decoration:

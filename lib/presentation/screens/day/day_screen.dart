@@ -93,7 +93,7 @@ final class _DayScreenContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   DayGrid(
-                    slotCategories: calculation.slotCategories,
+                    slots: record.slots,
                     onSlotTap: (index) async {
                       await controller.toggleSlot(index);
                       if (context.mounted) {

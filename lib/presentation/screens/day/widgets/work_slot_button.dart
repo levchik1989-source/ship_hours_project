@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
 
-import '../../../../domain/services/hours_calculator.dart';
+import '../../../../domain/entities/work_slot.dart';
 
 final class WorkSlotButton extends StatelessWidget {
   const WorkSlotButton({
     required this.label,
-    required this.category,
+    required this.slot,
     required this.onPressed,
     super.key,
   });
 
   final String label;
-  final WorkSlotCategory category;
+  final WorkSlot slot;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final (background, foreground, border) = switch (category) {
+    final isWorked = slot.isWorked;
+    final background = !isWorked
+        ? const Color(0xFF142033)
+        : slot.isUkWaters
+            ? const Color(0xFF18B83D)
+            : const Color(0xFF1677D2);
+    final foreground = !isWorked ? const Color(0xFF9CA3AF) : Colors.white;
+    final border = !isWorked
+        ? const Color(0xFF263348)
+        : slot.isUkWaters
+            ? const Color(0xFF22C55E)
+            : const Color(0xFF38BDF8);
+    /*
+    final unused = switch (slot.state) {
       WorkSlotCategory.regular => (
           const Color(0xFF18B83D),
           Colors.white,
@@ -38,6 +51,7 @@ final class WorkSlotButton extends StatelessWidget {
           const Color(0xFF263348),
         ),
     };
+    */
 
     return Expanded(
       child: Padding(
@@ -55,7 +69,7 @@ final class WorkSlotButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: border.withValues(alpha: 0.55)),
             boxShadow: [
-              if (category != WorkSlotCategory.rest)
+              if (isWorked)
                 BoxShadow(
                   color: background.withValues(alpha: 0.20),
                   blurRadius: 10,
