@@ -1,17 +1,21 @@
 import '../data/hive/hive_initializer.dart';
 import '../data/repositories/settings_repository_impl.dart';
 import '../data/repositories/work_hours_repository_impl.dart';
+import '../data/salary_profiles/in_memory_salary_profile_repository.dart';
 import '../domain/repositories/settings_repository.dart';
 import '../domain/repositories/work_hours_repository.dart';
+import '../domain/repositories/salary_profile_repository.dart';
 
 final class AppDependencies {
   const AppDependencies({
     required this.settingsRepository,
     required this.workHoursRepository,
+    required this.salaryProfileRepository,
   });
 
   final SettingsRepository settingsRepository;
   final WorkHoursRepository workHoursRepository;
+  final SalaryProfileRepository salaryProfileRepository;
 }
 
 final class AppBootstrap {
@@ -25,6 +29,7 @@ final class AppBootstrap {
       workHoursRepository: WorkHoursRepositoryImpl(
         dayRecordsBox: database.dayRecordsBox,
       ),
+      salaryProfileRepository: InMemorySalaryProfileRepository(),
     );
   }
 }

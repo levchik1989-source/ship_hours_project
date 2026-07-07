@@ -1,3 +1,5 @@
+import '../../../domain/entities/salary_calculation.dart';
+
 final class CldnWageInput {
   const CldnWageInput({
     required this.startDate,
@@ -75,7 +77,7 @@ final class CldnWageResult {
 final class CldnWageCalculator {
   const CldnWageCalculator._();
 
-  static CldnWageResult calculate(CldnWageInput input) {
+  static SalaryCalculation calculate(CldnWageInput input) {
     final payableDays = _payableDays(input.startDate, input.endDate);
     final daysRatio = payableDays / 30.0;
 
@@ -123,7 +125,12 @@ final class CldnWageCalculator {
         extraOtNonUk -
         input.canteenDeduction;
 
-    return CldnWageResult(
+    return SalaryCalculation(
+      totalHours: totalHours,
+      ukHours: input.ukTotalHours,
+      nonUkHours: input.nonUkTotalHours,
+      ukOvertimeHours: input.ukOvertimeHours,
+      nonUkOvertimeHours: input.nonUkOvertimeHours,
       payableDays: payableDays,
       guaranteedOtNorm: guaranteedOtNorm,
       guaranteedOtUkHours: guaranteedOtUkHours,
@@ -138,6 +145,8 @@ final class CldnWageCalculator {
       guaranteedOtNonUk: guaranteedOtNonUk,
       extraOtUk: extraOtUk,
       extraOtNonUk: extraOtNonUk,
+      lashingBonus: 0,
+      travelAllowance: 0,
       canteenDeduction: input.canteenDeduction,
       total: total,
     );

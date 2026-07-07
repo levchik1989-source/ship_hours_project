@@ -6,4 +6,5 @@ final class HiveBoxes {
   static const String salaryProfiles = 'salary_profiles_box';
 
   static const String appSettingsKey = 'app_settings';
+  static const String selectedSalaryProfileKey = 'selected_salary_profile';
 }
