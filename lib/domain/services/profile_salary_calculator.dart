@@ -25,10 +25,10 @@ final class ProfileSalaryCalculator {
         settings: settings.copyWith(regularHours: profile.standardWorkDay),
       );
 
-      // Временно все дни считаются как UK.
-      // Позже добавим в DayRecord выбор UK / non-UK.
-      ukHours += result.totalHours;
-      ukOvertimeHours += result.overtimeHours + result.holidayHours;
+      ukHours += result.ukRegularHours + result.ukOvertimeHours;
+      nonUkHours += result.nonUkRegularHours + result.nonUkOvertimeHours;
+      ukOvertimeHours += result.ukOvertimeHours;
+      nonUkOvertimeHours += result.nonUkOvertimeHours;
     }
 
     final totalHours = ukHours + nonUkHours;

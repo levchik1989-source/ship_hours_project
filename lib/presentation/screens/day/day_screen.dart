@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/repositories/work_hours_repository.dart';
 import '../../../domain/services/hours_calculator.dart';
+import '../../../domain/services/profile_salary_calculator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
 import '../../controllers/day_controller.dart';
+import '../../controllers/salary_profile_controller.dart';
 import 'widgets/day_summary_card.dart';
 import 'widgets/day_grid.dart';
 
@@ -36,10 +38,20 @@ final class _DayScreenContent extends StatelessWidget {
     final controller = context.watch<DayController>();
     final settings = context.watch<AppSettingsController>().settings;
     final record = controller.record;
+    final activeProfile =
+        context.watch<SalaryProfileController>().activeProfile;
 
     final calculation = record == null
         ? null
         : HoursCalculator.calculate(record: record, settings: settings);
+
+    final salaryCalculation = record == null || activeProfile == null
+        ? null
+        : ProfileSalaryCalculator.calculate(
+            records: [record],
+            settings: settings,
+            profile: activeProfile,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -90,6 +102,7 @@ final class _DayScreenContent extends StatelessWidget {
                   DaySummaryCard(
                     calculation: calculation,
                     settings: settings,
+                    totalPay: salaryCalculation?.total ?? 0,
                   ),
                   const SizedBox(height: 12),
                   DayGrid(

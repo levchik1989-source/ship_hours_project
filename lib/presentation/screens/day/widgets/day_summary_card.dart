@@ -9,11 +9,13 @@ final class DaySummaryCard extends StatelessWidget {
   const DaySummaryCard({
     required this.calculation,
     required this.settings,
+    required this.totalPay,
     super.key,
   });
 
   final HoursCalculationResult calculation;
   final AppSettings settings;
+  final double totalPay;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ final class DaySummaryCard extends StatelessWidget {
                 child: _BigMetricCard(
                   title: l.totalPay,
                   value: MoneyFormatter.format(
-                    amount: calculation.totalPay,
+                    amount: totalPay,
                     currency: settings.currency,
                   ),
                   icon: Icons.account_balance_wallet_outlined,
