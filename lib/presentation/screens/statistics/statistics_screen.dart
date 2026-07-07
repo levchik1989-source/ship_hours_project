@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../../../app/app_router.dart';
 import '../../../domain/services/statistics_calculator.dart';
+import '../../../domain/services/profile_salary_calculator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
+import '../../controllers/salary_profile_controller.dart';
 import 'widgets/export_card.dart';
 import 'widgets/statistics_card.dart';
 
@@ -22,11 +24,26 @@ final class StatisticsScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final settings = context.watch<AppSettingsController>().settings;
     final calendarController = context.watch<CalendarController>();
+    final activeProfile =
+        context.watch<SalaryProfileController>().activeProfile;
+
+    final monthRecords = calendarController.records.where((record) {
+      return record.date.year == selectedMonth.year &&
+          record.date.month == selectedMonth.month;
+    }).toList();
 
     final statistics = StatisticsCalculator.calculate(
-      records: calendarController.records,
+      records: monthRecords,
       settings: settings,
     );
+
+    final salaryCalculation = activeProfile == null
+        ? null
+        : ProfileSalaryCalculator.calculate(
+            records: monthRecords,
+            settings: settings,
+            profile: activeProfile,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -68,6 +85,7 @@ final class StatisticsScreen extends StatelessWidget {
           StatisticsCard(
             statistics: statistics,
             settings: settings,
+            salaryCalculation: salaryCalculation,
           ),
           const SizedBox(height: 12),
           ExportCard(
