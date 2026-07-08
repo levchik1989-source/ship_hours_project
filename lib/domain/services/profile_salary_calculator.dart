@@ -115,19 +115,22 @@ final class ProfileSalaryCalculator {
   }
 
   static int _payableDays(List<DayRecord> records) {
-    if (records.isEmpty) return 30;
+    final payableRecords = records
+        .where((record) => record.slots.any((slot) => slot.isWorked))
+        .toList();
 
-    final dates = records.map((e) => e.date).toList()..sort();
+    if (payableRecords.isEmpty) return 0;
+
+    final dates = payableRecords.map((e) => e.date).toList()..sort();
     final first = dates.first;
     final last = dates.last;
 
     final lastDayOfMonth = DateTime(first.year, first.month + 1, 0).day;
-
     final isFullMonth = first.day == 1 && last.day == lastDayOfMonth;
 
     if (isFullMonth) return 30;
 
-    return last.difference(first).inDays + 1;
+    return payableRecords.length;
   }
 
   static double _guaranteedOtNorm(List<DayRecord> records, int payableDays) {
