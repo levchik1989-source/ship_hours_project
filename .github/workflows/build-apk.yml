@@ -18,7 +18,14 @@ jobs:
 
       - name: Restore signing key
         run: |
-          printf "%s" "${{ secrets.KEYSTORE_BASE64 }}" | tr -d "\\n\\r " | base64 --decode > android/shiphours-release-key.jks
+          printf "%s%s%s%s%s" \
+            "${{ secrets.KEYSTORE_B64_1 }}" \
+            "${{ secrets.KEYSTORE_B64_2 }}" \
+            "${{ secrets.KEYSTORE_B64_3 }}" \
+            "${{ secrets.KEYSTORE_B64_4 }}" \
+            "${{ secrets.KEYSTORE_B64_5 }}" \
+            | base64 --decode > android/shiphours-release-key.jks
+
           cat > android/key.properties <<EOF
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
