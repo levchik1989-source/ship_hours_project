@@ -65,10 +65,10 @@ final class ProfileSalaryCalculator {
         profile.leaveNonUk * monthPart * _hoursPart(nonUkHours, totalHours);
 
     final guaranteedOtUk =
-        guaranteedOtUkHours * _rate(profile.guaranteedOtUk, guaranteedOtNorm);
+        guaranteedOtUkHours * _rate(profile.guaranteedOtUk);
 
-    final guaranteedOtNonUk = guaranteedOtNonUkHours *
-        _rate(profile.guaranteedOtNonUk, guaranteedOtNorm);
+    final guaranteedOtNonUk =
+        guaranteedOtNonUkHours * _rate(profile.guaranteedOtNonUk);
 
     final extraOtUk = extraOtUkHours * profile.extraOtUkRate;
     final extraOtNonUk = extraOtNonUkHours * profile.extraOtNonUkRate;
@@ -143,8 +143,7 @@ final class ProfileSalaryCalculator {
     return hours / totalHours;
   }
 
-  static double _rate(double monthlyAmount, double guaranteedNorm) {
-    if (guaranteedNorm == 0) return 0;
-    return monthlyAmount / guaranteedNorm;
+  static double _rate(double monthlyAmount) {
+    return monthlyAmount / 103;
   }
 }
