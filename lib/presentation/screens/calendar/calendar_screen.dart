@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import '../../../app/app_router.dart';
 import '../../../core/utils/money_formatter.dart';
 import '../../../domain/services/statistics_calculator.dart';
+import '../../../domain/services/profile_salary_calculator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../controllers/app_settings_controller.dart';
 import '../../controllers/calendar_controller.dart';
+import '../../controllers/salary_profile_controller.dart';
 import 'widgets/calendar_grid.dart';
 import 'widgets/month_header.dart';
 
@@ -23,6 +25,16 @@ final class CalendarScreen extends StatelessWidget {
       records: controller.records,
       settings: settings,
     );
+
+    final activeProfile = context.watch<SalaryProfileController>().activeProfile;
+
+    final salaryCalculation = activeProfile == null
+        ? null
+        : ProfileSalaryCalculator.calculate(
+            records: controller.records,
+            settings: settings,
+            profile: activeProfile,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +81,10 @@ final class CalendarScreen extends StatelessWidget {
           : Column(
               children: [
                 _CalendarSummary(
-                    statistics: statistics, currency: settings.currency),
+                    statistics: statistics,
+                totalPay: salaryCalculation?.total ?? statistics.totalPay,
+                currency: settings.currency,
+              ),
                 MonthHeader(
                   month: controller.selectedMonth,
                   onPrevious: controller.previousMonth,
@@ -91,10 +106,12 @@ final class CalendarScreen extends StatelessWidget {
 final class _CalendarSummary extends StatelessWidget {
   const _CalendarSummary({
     required this.statistics,
+    required this.totalPay,
     required this.currency,
   });
 
   final dynamic statistics;
+  final double totalPay;
   final dynamic currency;
 
   @override
@@ -120,7 +137,7 @@ final class _CalendarSummary extends StatelessWidget {
                 child: _SummaryCard(
                   title: l.totalPay,
                   value: MoneyFormatter.format(
-                    amount: statistics.totalPay,
+                    amount: totalPay,
                     currency: currency,
                   ),
                   icon: Icons.account_balance_wallet_outlined,
