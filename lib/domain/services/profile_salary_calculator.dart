@@ -35,14 +35,19 @@ final class ProfileSalaryCalculator {
     final payableDays = _payableDays(records);
     final guaranteedOtNorm = _guaranteedOtNorm(records, payableDays);
 
-    final guaranteedOtUkHours =
-        ukOvertimeHours.clamp(0, guaranteedOtNorm).toDouble();
+    final totalOvertimeHours = ukOvertimeHours + nonUkOvertimeHours;
 
-    final remainingGuaranteed =
-        (guaranteedOtNorm - guaranteedOtUkHours).clamp(0, double.infinity);
+    final usedGuaranteedOtHours = totalOvertimeHours <= 0
+        ? 0.0
+        : guaranteedOtNorm.clamp(0, totalOvertimeHours).toDouble();
 
-    final guaranteedOtNonUkHours =
-        nonUkOvertimeHours.clamp(0, remainingGuaranteed).toDouble();
+    final guaranteedOtUkHours = totalOvertimeHours <= 0
+        ? 0.0
+        : usedGuaranteedOtHours * (ukOvertimeHours / totalOvertimeHours);
+
+    final guaranteedOtNonUkHours = totalOvertimeHours <= 0
+        ? 0.0
+        : usedGuaranteedOtHours * (nonUkOvertimeHours / totalOvertimeHours);
 
     final extraOtUkHours = (ukOvertimeHours - guaranteedOtUkHours)
         .clamp(0, double.infinity)
