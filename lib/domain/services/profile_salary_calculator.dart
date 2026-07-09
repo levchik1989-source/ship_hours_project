@@ -33,7 +33,11 @@ final class ProfileSalaryCalculator {
 
     final totalHours = ukHours + nonUkHours;
     final payableDays = _payableDays(records);
-    final guaranteedOtNorm = _guaranteedOtNorm(records, payableDays);
+    final guaranteedOtNorm = _guaranteedOtNorm(
+      records,
+      payableDays,
+      settings,
+    );
 
     final totalOvertimeHours = ukOvertimeHours + nonUkOvertimeHours;
 
@@ -70,10 +74,10 @@ final class ProfileSalaryCalculator {
         profile.leaveNonUk * monthPart * _hoursPart(nonUkHours, totalHours);
 
     final guaranteedOtUk =
-        guaranteedOtUkHours * _rate(profile.guaranteedOtUk);
+        guaranteedOtUkHours * _rate(profile.guaranteedOtUk, settings);
 
     final guaranteedOtNonUk =
-        guaranteedOtNonUkHours * _rate(profile.guaranteedOtNonUk);
+        guaranteedOtNonUkHours * _rate(profile.guaranteedOtNonUk, settings);
 
     final extraOtUk = extraOtUkHours * profile.extraOtUkRate;
     final extraOtNonUk = extraOtNonUkHours * profile.extraOtNonUkRate;
@@ -138,9 +142,13 @@ final class ProfileSalaryCalculator {
     return payableRecords.length;
   }
 
-  static double _guaranteedOtNorm(List<DayRecord> records, int payableDays) {
-    if (records.isEmpty) return 0;
-    return 103 * payableDays / 30;
+  static double _guaranteedOtNorm(
+    List<DayRecord> records,
+    int payableDays,
+    AppSettings settings,
+  ) {
+    if (records.isEmpty || !settings.fixedOvertimeEnabled) return 0;
+    return settings.fixedOvertimeHours * payableDays / 30;
   }
 
   static double _hoursPart(double hours, double totalHours) {
@@ -148,7 +156,10 @@ final class ProfileSalaryCalculator {
     return hours / totalHours;
   }
 
-  static double _rate(double monthlyAmount) {
-    return monthlyAmount / 103;
+  static double _rate(double monthlyAmount, AppSettings settings) {
+    if (!settings.fixedOvertimeEnabled || settings.fixedOvertimeHours == 0) {
+      return 0;
+    }
+    return monthlyAmount / settings.fixedOvertimeHours;
   }
 }
