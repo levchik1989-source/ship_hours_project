@@ -252,6 +252,7 @@ final class _MetricTile extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Colors.white,
                   fontWeight: FontWeight.w900,
                 ),
           ),
@@ -259,7 +260,9 @@ final class _MetricTile extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.white70,
+                ),
           ),
         ],
       ),
