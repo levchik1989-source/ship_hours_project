@@ -38,4 +38,49 @@ final class WorkHoursRepositoryImpl implements WorkHoursRepository {
     }
     return records;
   }
+
+  String _monthAdjustmentsKey(DateTime month) {
+    final normalizedMonth = DateTime(month.year, month.month);
+
+    return 'payroll_${normalizedMonth.year}_'
+        '${normalizedMonth.month.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  Future<Map<String, double>> loadMonthAdjustments(
+    DateTime month,
+  ) async {
+    final raw = dayRecordsBox.get(
+      _monthAdjustmentsKey(month),
+    );
+
+    if (raw == null) {
+      return const {
+        'travelAllowance': 0.0,
+        'canteenDeduction': 0.0,
+      };
+    }
+
+    return {
+      'travelAllowance':
+          (raw['travelAllowance'] as num?)?.toDouble() ?? 0.0,
+      'canteenDeduction':
+          (raw['canteenDeduction'] as num?)?.toDouble() ?? 0.0,
+    };
+  }
+
+  @override
+  Future<void> saveMonthAdjustments(
+    DateTime month, {
+    required double travelAllowance,
+    required double canteenDeduction,
+  }) async {
+    await dayRecordsBox.put(
+      _monthAdjustmentsKey(month),
+      <String, dynamic>{
+        'travelAllowance': travelAllowance,
+        'canteenDeduction': canteenDeduction,
+      },
+    );
+  }
 }

@@ -43,6 +43,8 @@ final class StatisticsScreen extends StatelessWidget {
             records: monthRecords,
             settings: settings,
             profile: activeProfile,
+        travelAllowance: calendarController.travelAllowance,
+        canteenDeduction: calendarController.canteenDeduction,
           );
 
     return Scaffold(

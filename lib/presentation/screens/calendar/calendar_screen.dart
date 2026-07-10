@@ -34,6 +34,8 @@ final class CalendarScreen extends StatelessWidget {
             records: controller.records,
             settings: settings,
             profile: activeProfile,
+        travelAllowance: controller.travelAllowance,
+        canteenDeduction: controller.canteenDeduction,
           );
 
     return Scaffold(
@@ -85,7 +87,16 @@ final class CalendarScreen extends StatelessWidget {
                 totalPay: salaryCalculation?.total ?? statistics.totalPay,
                 currency: settings.currency,
               ),
-                MonthHeader(
+                _PayrollAdjustmentsCard(
+                travelAllowance: controller.travelAllowance,
+                canteenDeduction: controller.canteenDeduction,
+                currency: settings.currency,
+                onEdit: () => _showPayrollAdjustmentsDialog(
+                  context,
+                  controller,
+                ),
+              ),
+              MonthHeader(
                   month: controller.selectedMonth,
                   onPrevious: controller.previousMonth,
                   onNext: controller.nextMonth,
@@ -287,3 +298,237 @@ final class _MiniStat extends StatelessWidget {
     );
   }
 }
+
+
+Future<void> _showPayrollAdjustmentsDialog(
+  BuildContext context,
+  CalendarController controller,
+) async {
+  final travelController = TextEditingController(
+    text: controller.travelAllowance == 0
+        ? ''
+        : controller.travelAllowance.toStringAsFixed(2),
+  );
+
+  final canteenController = TextEditingController(
+    text: controller.canteenDeduction == 0
+        ? ''
+        : controller.canteenDeduction.toStringAsFixed(2),
+  );
+
+  final shouldSave = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) {
+      return AlertDialog(
+        title: const Text('Payroll adjustments'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: travelController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Travel allowance',
+                  helperText: 'Added to salary',
+                  prefixIcon: Icon(
+                    Icons.flight_takeoff_rounded,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: canteenController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Canteen deduction',
+                  helperText: 'Deducted from salary',
+                  prefixIcon: Icon(
+                    Icons.restaurant_rounded,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (shouldSave == true) {
+    double parseAmount(String value) {
+      final normalized = value
+          .trim()
+          .replaceAll(',', '.');
+
+      return double.tryParse(normalized) ?? 0.0;
+    }
+
+    await controller.saveMonthAdjustments(
+      travelAllowance: parseAmount(
+        travelController.text,
+      ),
+      canteenDeduction: parseAmount(
+        canteenController.text,
+      ),
+    );
+  }
+
+  travelController.dispose();
+  canteenController.dispose();
+}
+
+
+final class _PayrollAdjustmentsCard
+    extends StatelessWidget {
+  const _PayrollAdjustmentsCard({
+    required this.travelAllowance,
+    required this.canteenDeduction,
+    required this.currency,
+    required this.onEdit,
+  });
+
+  final double travelAllowance;
+  final double canteenDeduction;
+  final dynamic currency;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        20,
+        0,
+        20,
+        12,
+      ),
+      child: Material(
+        color: const Color(0xFF071827),
+        borderRadius: BorderRadius.circular(18),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onEdit,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              18,
+              12,
+              10,
+              14,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Payroll adjustments',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      tooltip: 'Edit',
+                      onPressed: onEdit,
+                      icon: const Icon(
+                        Icons.edit_rounded,
+                      ),
+                    ),
+                  ],
+                ),
+                _PayrollAdjustmentRow(
+                  icon: Icons.flight_takeoff_rounded,
+                  label: 'Travel allowance',
+                  sign: '+',
+                  amount: travelAllowance,
+                  currency: currency,
+                ),
+                const SizedBox(height: 10),
+                _PayrollAdjustmentRow(
+                  icon: Icons.restaurant_rounded,
+                  label: 'Canteen',
+                  sign: '-',
+                  amount: canteenDeduction,
+                  currency: currency,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+final class _PayrollAdjustmentRow
+    extends StatelessWidget {
+  const _PayrollAdjustmentRow({
+    required this.icon,
+    required this.label,
+    required this.sign,
+    required this.amount,
+    required this.currency,
+  });
+
+  final IconData icon;
+  final String label;
+  final String sign;
+  final double amount;
+  final dynamic currency;
+
+  @override
+  Widget build(BuildContext context) {
+    final formattedAmount = MoneyFormatter.format(
+      amount: amount,
+      currency: currency,
+    );
+
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 22,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+        ),
+        Text(
+          '$sign$formattedAmount',
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
