@@ -46,14 +46,14 @@ final class CalendarDayTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isObservedHoliday
-              ? const Color(0xFFD84315).withOpacity(0.25)
+              ? const Color(0xFFD84315).withValues(alpha: 0.25)
               : isWeekend
-                  ? const Color(0xFF263238).withOpacity(0.55)
+                  ? const Color(0xFF263238).withValues(alpha: 0.55)
                   : scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: accent.withOpacity(
-              workedHours > 0 || isObservedHoliday ? 0.9 : 0.18,
+            color: accent.withValues(
+              alpha: workedHours > 0 || isObservedHoliday ? 0.9 : 0.18,
             ),
             width: workedHours > 0 || isObservedHoliday ? 1.3 : 1,
           ),

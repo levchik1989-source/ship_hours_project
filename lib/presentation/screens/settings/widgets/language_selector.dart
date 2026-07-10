@@ -4,7 +4,8 @@ import '../../../../core/constants/supported_languages.dart';
 import '../../../../l10n/app_localizations.dart';
 
 final class LanguageSelector extends StatelessWidget {
-  const LanguageSelector({required this.value, required this.onChanged, super.key});
+  const LanguageSelector(
+      {required this.value, required this.onChanged, super.key});
 
   final Locale value;
   final ValueChanged<Locale> onChanged;
@@ -17,10 +18,11 @@ final class LanguageSelector extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: DropdownButtonFormField<Locale>(
-          value: _normalizedValue(),
+          initialValue: _normalizedValue(),
           decoration: InputDecoration(labelText: localizations.language),
           items: SupportedLanguages.values.map((language) {
-            return DropdownMenuItem<Locale>(value: language.locale, child: Text(language.nativeName));
+            return DropdownMenuItem<Locale>(
+                value: language.locale, child: Text(language.nativeName));
           }).toList(),
           onChanged: (locale) {
             if (locale != null) {

@@ -14,7 +14,7 @@ import 'app_bootstrap.dart';
 import 'app_router.dart';
 
 final class ShipHoursApp extends StatelessWidget {
-  ShipHoursApp({
+  const ShipHoursApp({
     required this.dependencies,
     super.key,
   });

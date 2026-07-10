@@ -26,7 +26,8 @@ final class CalendarScreen extends StatelessWidget {
       settings: settings,
     );
 
-    final activeProfile = context.watch<SalaryProfileController>().activeProfile;
+    final activeProfile =
+        context.watch<SalaryProfileController>().activeProfile;
 
     final salaryCalculation = activeProfile == null
         ? null
@@ -34,8 +35,8 @@ final class CalendarScreen extends StatelessWidget {
             records: controller.records,
             settings: settings,
             profile: activeProfile,
-        travelAllowance: controller.travelAllowance,
-        canteenDeduction: controller.canteenDeduction,
+            travelAllowance: controller.travelAllowance,
+            canteenDeduction: controller.canteenDeduction,
           );
 
     return Scaffold(
@@ -83,20 +84,20 @@ final class CalendarScreen extends StatelessWidget {
           : Column(
               children: [
                 _CalendarSummary(
-                    statistics: statistics,
-                totalPay: salaryCalculation?.total ?? statistics.totalPay,
-                currency: settings.currency,
-              ),
-                _PayrollAdjustmentsCard(
-                travelAllowance: controller.travelAllowance,
-                canteenDeduction: controller.canteenDeduction,
-                currency: settings.currency,
-                onEdit: () => _showPayrollAdjustmentsDialog(
-                  context,
-                  controller,
+                  statistics: statistics,
+                  totalPay: salaryCalculation?.total ?? statistics.totalPay,
+                  currency: settings.currency,
                 ),
-              ),
-              MonthHeader(
+                _PayrollAdjustmentsCard(
+                  travelAllowance: controller.travelAllowance,
+                  canteenDeduction: controller.canteenDeduction,
+                  currency: settings.currency,
+                  onEdit: () => _showPayrollAdjustmentsDialog(
+                    context,
+                    controller,
+                  ),
+                ),
+                MonthHeader(
                   month: controller.selectedMonth,
                   onPrevious: controller.previousMonth,
                   onNext: controller.nextMonth,
@@ -291,6 +292,7 @@ final class _MiniStat extends StatelessWidget {
         Text(
           '${value.toStringAsFixed(1)}h',
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
         ),
@@ -298,7 +300,6 @@ final class _MiniStat extends StatelessWidget {
     );
   }
 }
-
 
 Future<void> _showPayrollAdjustmentsDialog(
   BuildContext context,
@@ -327,8 +328,7 @@ Future<void> _showPayrollAdjustmentsDialog(
             children: [
               TextField(
                 controller: travelController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(
+                keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
                 decoration: const InputDecoration(
@@ -342,8 +342,7 @@ Future<void> _showPayrollAdjustmentsDialog(
               const SizedBox(height: 16),
               TextField(
                 controller: canteenController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(
+                keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
                 decoration: const InputDecoration(
@@ -377,9 +376,7 @@ Future<void> _showPayrollAdjustmentsDialog(
 
   if (shouldSave == true) {
     double parseAmount(String value) {
-      final normalized = value
-          .trim()
-          .replaceAll(',', '.');
+      final normalized = value.trim().replaceAll(',', '.');
 
       return double.tryParse(normalized) ?? 0.0;
     }
@@ -398,9 +395,7 @@ Future<void> _showPayrollAdjustmentsDialog(
   canteenController.dispose();
 }
 
-
-final class _PayrollAdjustmentsCard
-    extends StatelessWidget {
+final class _PayrollAdjustmentsCard extends StatelessWidget {
   const _PayrollAdjustmentsCard({
     required this.travelAllowance,
     required this.canteenDeduction,
@@ -481,9 +476,7 @@ final class _PayrollAdjustmentsCard
   }
 }
 
-
-final class _PayrollAdjustmentRow
-    extends StatelessWidget {
+final class _PayrollAdjustmentRow extends StatelessWidget {
   const _PayrollAdjustmentRow({
     required this.icon,
     required this.label,
@@ -531,4 +524,3 @@ final class _PayrollAdjustmentRow
     );
   }
 }
-
