@@ -67,6 +67,21 @@ final class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.badge_outlined),
+              title: const Text('Salary Profiles'),
+              subtitle: const Text('Create and manage salary profiles'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const SalaryProfilesScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
           _SettingsSection(
             title: localizations.companyRules,
             children: [
@@ -182,21 +197,6 @@ final class SettingsScreen extends StatelessWidget {
               value: settings.themeMode, onChanged: controller.updateThemeMode),
           LanguageSelector(
               value: settings.locale, onChanged: controller.updateLocale),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.badge_outlined),
-              title: const Text('Salary Profiles'),
-              subtitle: const Text('Create and manage salary profiles'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const SalaryProfilesScreen(),
-                  ),
-                );
-              },
-            ),
-          ),
           Card(
             child: ListTile(
               leading: const Icon(Icons.info_outline),
