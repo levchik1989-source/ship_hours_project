@@ -171,13 +171,17 @@ final class _BigMetricCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(title),
+                Text(
+                  title,
+                  style: const TextStyle(color: Colors.white70),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Colors.white,
                         fontWeight: FontWeight.w800,
                       ),
                 ),
@@ -222,6 +226,7 @@ final class _SmallMetric extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white70),
               ),
             ),
           ],
@@ -230,6 +235,7 @@ final class _SmallMetric extends StatelessWidget {
         Text(
           '${value.toStringAsFixed(1)}h',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
         ),

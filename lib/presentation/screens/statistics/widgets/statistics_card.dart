@@ -347,12 +347,18 @@ final class _PayslipSection extends StatelessWidget {
                 children: [
                   Icon(Icons.circle, color: color, size: 8),
                   const SizedBox(width: 9),
-                  Expanded(child: Text(row.label)),
+                  Expanded(
+                    child: Text(
+                      row.label,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ),
                   Text(
                     '${negative ? '-' : ''}${MoneyFormatter.format(amount: row.amount, currency: settings.currency)}',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: negative ? const Color(0xFFFF6B6B) : null,
+                          color:
+                              negative ? const Color(0xFFFF6B6B) : Colors.white,
                         ),
                   ),
                 ],
@@ -423,12 +429,17 @@ final class _TotalsCard extends StatelessWidget {
   Widget _totalRow(BuildContext context, String label, double amount) {
     return Row(
       children: [
-        Expanded(child: Text(label)),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(color: Colors.white70),
+          ),
+        ),
         Text(
           MoneyFormatter.format(amount: amount, currency: settings.currency),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: amount < 0 ? const Color(0xFFFF6B6B) : null,
+                color: amount < 0 ? const Color(0xFFFF6B6B) : Colors.white,
               ),
         ),
       ],
@@ -450,11 +461,15 @@ final class _InfoCard extends StatelessWidget {
       ),
       child: const Row(
         children: [
-          Icon(Icons.info_outline),
+          Icon(
+            Icons.info_outline,
+            color: Colors.white70,
+          ),
           SizedBox(width: 12),
           Expanded(
             child: Text(
               'All amounts are calculated according to your active salary profile.',
+              style: TextStyle(color: Colors.white70),
             ),
           ),
         ],

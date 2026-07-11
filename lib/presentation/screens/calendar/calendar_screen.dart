@@ -244,13 +244,19 @@ final class _SummaryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white70),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Colors.white,
                         fontWeight: FontWeight.w800,
                       ),
                 ),
@@ -287,7 +293,12 @@ final class _MiniStat extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+        Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: Colors.white70),
+        ),
         const SizedBox(height: 4),
         Text(
           '${value.toStringAsFixed(1)}h',
@@ -438,6 +449,7 @@ final class _PayrollAdjustmentsCard extends StatelessWidget {
                       child: Text(
                         'Payroll adjustments',
                         style: TextStyle(
+                          color: Colors.white,
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),
@@ -445,6 +457,7 @@ final class _PayrollAdjustmentsCard extends StatelessWidget {
                     ),
                     IconButton(
                       tooltip: 'Edit',
+                      color: Colors.white70,
                       onPressed: onEdit,
                       icon: const Icon(
                         Icons.edit_rounded,
@@ -503,12 +516,14 @@ final class _PayrollAdjustmentRow extends StatelessWidget {
         Icon(
           icon,
           size: 22,
+          color: Colors.white70,
         ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             label,
             style: const TextStyle(
+              color: Colors.white70,
               fontSize: 15,
             ),
           ),
@@ -516,6 +531,7 @@ final class _PayrollAdjustmentRow extends StatelessWidget {
         Text(
           '$sign$formattedAmount',
           style: const TextStyle(
+            color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
