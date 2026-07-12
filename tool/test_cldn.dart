@@ -1,4 +1,4 @@
-import '../lib/domain/services/cldn/cldn_wage_calculator.dart';
+import 'package:ship_hours/domain/services/cldn/cldn_wage_calculator.dart';
 
 void main() {
   final result = CldnWageCalculator.calculate(

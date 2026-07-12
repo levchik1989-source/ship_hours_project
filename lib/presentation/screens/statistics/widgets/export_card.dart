@@ -4,13 +4,20 @@ import '../../../../application/export/report_export_service.dart';
 import '../../../../domain/entities/app_settings.dart';
 import '../../../../domain/entities/month_statistics.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../domain/entities/salary_calculation.dart';
 
 final class ExportCard extends StatefulWidget {
-  const ExportCard({required this.statistics, required this.settings, required this.month, super.key});
+  const ExportCard(
+      {required this.statistics,
+      required this.settings,
+      required this.month,
+      required this.salaryCalculation,
+      super.key});
 
   final MonthStatistics statistics;
   final AppSettings settings;
   final DateTime month;
+  final SalaryCalculation? salaryCalculation;
 
   @override
   State<ExportCard> createState() => _ExportCardState();
@@ -33,7 +40,11 @@ final class _ExportCardState extends State<ExportCard> {
               children: [
                 const Icon(Icons.file_download_outlined),
                 const SizedBox(width: 10),
-                Text(l.export, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Text(l.export,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w800)),
               ],
             ),
             const SizedBox(height: 12),
@@ -65,6 +76,7 @@ final class _ExportCardState extends State<ExportCard> {
         statistics: widget.statistics,
         settings: widget.settings,
         month: widget.month,
+        salaryCalculation: widget.salaryCalculation,
       ),
     );
   }
@@ -76,11 +88,13 @@ final class _ExportCardState extends State<ExportCard> {
         statistics: widget.statistics,
         settings: widget.settings,
         month: widget.month,
+        salaryCalculation: widget.salaryCalculation,
       ),
     );
   }
 
-  Future<void> _runExport(BuildContext context, Future<void> Function() action) async {
+  Future<void> _runExport(
+      BuildContext context, Future<void> Function() action) async {
     setState(() => _isExporting = true);
     try {
       await action();

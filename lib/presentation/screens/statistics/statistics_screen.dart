@@ -43,8 +43,8 @@ final class StatisticsScreen extends StatelessWidget {
             records: monthRecords,
             settings: settings,
             profile: activeProfile,
-        travelAllowance: calendarController.travelAllowance,
-        canteenDeduction: calendarController.canteenDeduction,
+            travelAllowance: calendarController.travelAllowance,
+            canteenDeduction: calendarController.canteenDeduction,
           );
 
     return Scaffold(
@@ -94,6 +94,7 @@ final class StatisticsScreen extends StatelessWidget {
             statistics: statistics,
             settings: settings,
             month: selectedMonth,
+            salaryCalculation: salaryCalculation,
           ),
         ],
       ),
