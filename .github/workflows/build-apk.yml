@@ -26,16 +26,40 @@ jobs:
             "${{ secrets.KEYSTORE_B64_5 }}" \
             | base64 --decode > android/shiphours-release-key.jks
 
-          cat > android/key.properties <<EOF
+          cat > android/key.properties <<EOF2
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
           keyAlias=${{ secrets.KEY_ALIAS }}
           storeFile=../shiphours-release-key.jks
-          EOF
+          EOF2
 
-      - run: flutter pub get
+      - name: Flutter pub get
+        run: flutter pub get
 
-      - run: flutter build apk --release
+      - name: Patch media_store_plus compileSdk
+        shell: bash
+        run: |
+          PLUGIN_GRADLE="$(find "${PUB_CACHE:-$HOME/.pub-cache}" \
+            -path '*/media_store_plus-*/android/build.gradle' \
+            -print -quit)"
+
+          if [ -z "$PLUGIN_GRADLE" ]; then
+            echo "ERROR: media_store_plus android/build.gradle not found"
+            exit 1
+          fi
+
+          echo "Found plugin file: $PLUGIN_GRADLE"
+
+          sed -i -E \
+            -e 's/compileSdkVersion[[:space:]]+[0-9]+/compileSdkVersion 35/g' \
+            -e 's/compileSdk[[:space:]]*=[[:space:]]*[0-9]+/compileSdk = 35/g' \
+            "$PLUGIN_GRADLE"
+
+          echo "compileSdk after patch:"
+          grep -nE 'compileSdk(Version)?' "$PLUGIN_GRADLE"
+
+      - name: Build release APK
+        run: flutter build apk --release
 
       - uses: actions/upload-artifact@v4
         with:
