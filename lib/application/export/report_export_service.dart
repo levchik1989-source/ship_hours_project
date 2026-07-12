@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -13,6 +14,9 @@ import '../../domain/entities/salary_calculation.dart';
 
 final class ReportExportService {
   const ReportExportService._();
+
+  static final MediaStore _mediaStore = MediaStore();
+  static bool _mediaStoreInitialized = false;
 
   static Future<void> exportPdf({
     required MonthStatistics statistics,
@@ -96,7 +100,7 @@ final class ReportExportService {
                 _money(overtimePay, settings.currency),
               ),
               _row(
-                'Additional',
+                'Allowances',
                 _money(additionalPay, settings.currency),
               ),
               _row(
@@ -130,7 +134,7 @@ final class ReportExportService {
     );
 
     final file = await _writeBytes(
-      fileName: 'ship_hours_${DateFormat('yyyy_MM').format(month)}.pdf',
+      fileName: 'ShipHours_Report_${DateFormat('yyyy-MM').format(month)}.pdf',
       bytes: await document.save(),
     );
 
@@ -200,7 +204,7 @@ final class ReportExportService {
       ],
       ['Basic pay', basicPay.toStringAsFixed(2)],
       ['Overtime pay', overtimePay.toStringAsFixed(2)],
-      ['Additional', additionalPay.toStringAsFixed(2)],
+      ['Allowances', additionalPay.toStringAsFixed(2)],
       ['Deductions', deductions.toStringAsFixed(2)],
       ['Total pay', totalPay.toStringAsFixed(2)],
       ['Currency', settings.currency.code.toUpperCase()],
@@ -210,7 +214,7 @@ final class ReportExportService {
     final csv = rows.map((row) => row.map(_csvCell).join(',')).join('\n');
 
     final file = await _writeString(
-      fileName: 'ship_hours_${DateFormat('yyyy_MM').format(month)}.csv',
+      fileName: 'ShipHours_Report_${DateFormat('yyyy-MM').format(month)}.csv',
       contents: csv,
     );
 
@@ -225,12 +229,16 @@ final class ReportExportService {
     required List<int> bytes,
   }) async {
     final directory = await getTemporaryDirectory();
-    final file = File('${directory.path}/$fileName');
+    final shareFile = File('${directory.path}/$fileName');
 
-    return file.writeAsBytes(
+    await shareFile.writeAsBytes(
       bytes,
       flush: true,
     );
+
+    await _saveToDownloads(shareFile);
+
+    return shareFile;
   }
 
   static Future<File> _writeString({
@@ -238,12 +246,59 @@ final class ReportExportService {
     required String contents,
   }) async {
     final directory = await getTemporaryDirectory();
-    final file = File('${directory.path}/$fileName');
+    final shareFile = File('${directory.path}/$fileName');
 
-    return file.writeAsString(
+    await shareFile.writeAsString(
       contents,
       flush: true,
     );
+
+    await _saveToDownloads(shareFile);
+
+    return shareFile;
+  }
+
+  static Future<void> _saveToDownloads(
+    File shareFile,
+  ) async {
+    await _ensureMediaStoreInitialized();
+
+    final temporaryDirectory = await getTemporaryDirectory();
+    final fileName = shareFile.uri.pathSegments.last;
+
+    // MediaStore удаляет переданный ему временный файл после копирования.
+    // Поэтому передаём отдельную копию, а shareFile оставляем для Share.
+    final mediaStoreFile = File(
+      '${temporaryDirectory.path}/media_store_$fileName',
+    );
+
+    await shareFile.copy(mediaStoreFile.path);
+
+    final saveInfo = await _mediaStore.saveFile(
+      tempFilePath: mediaStoreFile.path,
+      dirType: DirType.download,
+      dirName: DirName.download,
+    );
+
+    if (saveInfo == null) {
+      if (await mediaStoreFile.exists()) {
+        await mediaStoreFile.delete();
+      }
+
+      throw const FileSystemException(
+        'Could not save report to Download/ShipHours.',
+      );
+    }
+  }
+
+  static Future<void> _ensureMediaStoreInitialized() async {
+    if (_mediaStoreInitialized) {
+      return;
+    }
+
+    await MediaStore.ensureInitialized();
+    MediaStore.appFolder = 'ShipHours';
+    _mediaStoreInitialized = true;
   }
 
   static String _money(
