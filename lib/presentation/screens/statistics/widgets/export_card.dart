@@ -49,15 +49,27 @@ final class _ExportCardState extends State<ExportCard> {
             ),
             const SizedBox(height: 12),
             FilledButton.icon(
-              onPressed: _isExporting ? null : () => _exportPdf(context),
-              icon: const Icon(Icons.picture_as_pdf_outlined),
-              label: const Text('PDF Report'),
+              onPressed: _isExporting ? null : () => _savePdf(context),
+              icon: const Icon(Icons.save_alt_rounded),
+              label: const Text('Save PDF'),
             ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
-              onPressed: _isExporting ? null : () => _exportCsv(context),
-              icon: const Icon(Icons.table_chart_outlined),
-              label: const Text('CSV Report'),
+              onPressed: _isExporting ? null : () => _sharePdf(context),
+              icon: const Icon(Icons.share_rounded),
+              label: const Text('Share PDF'),
+            ),
+            const SizedBox(height: 12),
+            FilledButton.tonalIcon(
+              onPressed: _isExporting ? null : () => _saveCsv(context),
+              icon: const Icon(Icons.save_alt_rounded),
+              label: const Text('Save CSV'),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: _isExporting ? null : () => _shareCsv(context),
+              icon: const Icon(Icons.share_rounded),
+              label: const Text('Share CSV'),
             ),
             if (_isExporting) ...[
               const SizedBox(height: 12),
@@ -69,7 +81,7 @@ final class _ExportCardState extends State<ExportCard> {
     );
   }
 
-  Future<void> _exportPdf(BuildContext context) async {
+  Future<void> _savePdf(BuildContext context) async {
     await _runExport(
       context,
       () => ReportExportService.exportPdf(
@@ -77,11 +89,25 @@ final class _ExportCardState extends State<ExportCard> {
         settings: widget.settings,
         month: widget.month,
         salaryCalculation: widget.salaryCalculation,
+        share: false,
       ),
     );
   }
 
-  Future<void> _exportCsv(BuildContext context) async {
+  Future<void> _sharePdf(BuildContext context) async {
+    await _runExport(
+      context,
+      () => ReportExportService.exportPdf(
+        statistics: widget.statistics,
+        settings: widget.settings,
+        month: widget.month,
+        salaryCalculation: widget.salaryCalculation,
+        share: true,
+      ),
+    );
+  }
+
+  Future<void> _saveCsv(BuildContext context) async {
     await _runExport(
       context,
       () => ReportExportService.exportCsv(
@@ -89,6 +115,20 @@ final class _ExportCardState extends State<ExportCard> {
         settings: widget.settings,
         month: widget.month,
         salaryCalculation: widget.salaryCalculation,
+        share: false,
+      ),
+    );
+  }
+
+  Future<void> _shareCsv(BuildContext context) async {
+    await _runExport(
+      context,
+      () => ReportExportService.exportCsv(
+        statistics: widget.statistics,
+        settings: widget.settings,
+        month: widget.month,
+        salaryCalculation: widget.salaryCalculation,
+        share: true,
       ),
     );
   }

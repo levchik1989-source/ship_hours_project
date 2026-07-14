@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:file_selector/file_selector.dart';
 import 'package:intl/intl.dart';
-import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -15,14 +15,12 @@ import '../../domain/entities/salary_calculation.dart';
 final class ReportExportService {
   const ReportExportService._();
 
-  static final MediaStore _mediaStore = MediaStore();
-  static bool _mediaStoreInitialized = false;
-
   static Future<void> exportPdf({
     required MonthStatistics statistics,
     required AppSettings settings,
     required DateTime month,
     required SalaryCalculation? salaryCalculation,
+    required bool share,
   }) async {
     final document = pw.Document();
     final period = DateFormat.yMMMM().format(month);
@@ -137,11 +135,18 @@ final class ReportExportService {
       fileName: 'ShipHours_Report_${DateFormat('yyyy-MM').format(month)}.pdf',
       bytes: await document.save(),
     );
-
-    await Share.shareXFiles(
-      [XFile(file.path)],
-      text: 'Ship Hours PDF report',
-    );
+    if (share) {
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: 'Ship Hours PDF report',
+      );
+    } else {
+      await _saveWithDialog(
+        sourceFile: file,
+        mimeType: 'application/pdf',
+        extensions: const ['pdf'],
+      );
+    }
   }
 
   static Future<void> exportCsv({
@@ -149,6 +154,7 @@ final class ReportExportService {
     required AppSettings settings,
     required DateTime month,
     required SalaryCalculation? salaryCalculation,
+    required bool share,
   }) async {
     final salary = salaryCalculation;
 
@@ -217,11 +223,18 @@ final class ReportExportService {
       fileName: 'ShipHours_Report_${DateFormat('yyyy-MM').format(month)}.csv',
       contents: csv,
     );
-
-    await Share.shareXFiles(
-      [XFile(file.path)],
-      text: 'Ship Hours CSV report',
-    );
+    if (share) {
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: 'Ship Hours CSV report',
+      );
+    } else {
+      await _saveWithDialog(
+        sourceFile: file,
+        mimeType: 'text/csv',
+        extensions: const ['csv'],
+      );
+    }
   }
 
   static Future<File> _writeBytes({
@@ -235,8 +248,6 @@ final class ReportExportService {
       bytes,
       flush: true,
     );
-
-    await _saveToDownloads(shareFile);
 
     return shareFile;
   }
@@ -253,52 +264,39 @@ final class ReportExportService {
       flush: true,
     );
 
-    await _saveToDownloads(shareFile);
-
     return shareFile;
   }
 
-  static Future<void> _saveToDownloads(
-    File shareFile,
-  ) async {
-    await _ensureMediaStoreInitialized();
+  static Future<void> _saveWithDialog({
+    required File sourceFile,
+    required String mimeType,
+    required List<String> extensions,
+  }) async {
+    final fileName = sourceFile.uri.pathSegments.last;
 
-    final temporaryDirectory = await getTemporaryDirectory();
-    final fileName = shareFile.uri.pathSegments.last;
-
-    // MediaStore удаляет переданный ему временный файл после копирования.
-    // Поэтому передаём отдельную копию, а shareFile оставляем для Share.
-    final mediaStoreFile = File(
-      '${temporaryDirectory.path}/media_store_$fileName',
+    final location = await getSaveLocation(
+      suggestedName: fileName,
+      acceptedTypeGroups: [
+        XTypeGroup(
+          label: extensions.first.toUpperCase(),
+          extensions: extensions,
+          mimeTypes: [mimeType],
+        ),
+      ],
     );
 
-    await shareFile.copy(mediaStoreFile.path);
-
-    final saveInfo = await _mediaStore.saveFile(
-      tempFilePath: mediaStoreFile.path,
-      dirType: DirType.download,
-      dirName: DirName.download,
-    );
-
-    if (saveInfo == null) {
-      if (await mediaStoreFile.exists()) {
-        await mediaStoreFile.delete();
-      }
-
-      throw const FileSystemException(
-        'Could not save report to Download/ShipHours.',
-      );
-    }
-  }
-
-  static Future<void> _ensureMediaStoreInitialized() async {
-    if (_mediaStoreInitialized) {
+    // Пользователь нажал Back/Cancel — это не ошибка.
+    if (location == null) {
       return;
     }
 
-    await MediaStore.ensureInitialized();
-    MediaStore.appFolder = 'ShipHours';
-    _mediaStoreInitialized = true;
+    final exportFile = XFile(
+      sourceFile.path,
+      name: fileName,
+      mimeType: mimeType,
+    );
+
+    await exportFile.saveTo(location.path);
   }
 
   static String _money(
