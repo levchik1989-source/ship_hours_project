@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_selector/file_selector.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -14,6 +14,10 @@ import '../../domain/entities/salary_calculation.dart';
 
 final class ReportExportService {
   const ReportExportService._();
+
+  static const MethodChannel _fileExportChannel = MethodChannel(
+    'com.example.ship_hours/file_export',
+  );
 
   static Future<void> exportPdf({
     required MonthStatistics statistics,
@@ -274,29 +278,26 @@ final class ReportExportService {
   }) async {
     final fileName = sourceFile.uri.pathSegments.last;
 
-    final location = await getSaveLocation(
-      suggestedName: fileName,
-      acceptedTypeGroups: [
-        XTypeGroup(
-          label: extensions.first.toUpperCase(),
-          extensions: extensions,
-          mimeTypes: [mimeType],
-        ),
-      ],
+    final saved = await _fileExportChannel.invokeMethod<bool>(
+      'saveFile',
+      {
+        'sourcePath': sourceFile.path,
+        'suggestedName': fileName,
+        'mimeType': mimeType,
+      },
     );
 
-    // Пользователь нажал Back/Cancel — это не ошибка.
-    if (location == null) {
+    // false означает, что пользователь закрыл системное окно.
+    // Это нормальная отмена, а не ошибка экспорта.
+    if (saved == false) {
       return;
     }
 
-    final exportFile = XFile(
-      sourceFile.path,
-      name: fileName,
-      mimeType: mimeType,
-    );
-
-    await exportFile.saveTo(location.path);
+    if (saved != true) {
+      throw const FileSystemException(
+        'Android did not confirm that the report was saved.',
+      );
+    }
   }
 
   static String _money(
