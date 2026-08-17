@@ -25,10 +25,33 @@ final class ProfileSalaryCalculator {
         settings: settings.copyWith(regularHours: profile.standardWorkDay),
       );
 
-      ukHours += result.ukRegularHours + result.ukOvertimeHours;
-      nonUkHours += result.nonUkRegularHours + result.nonUkOvertimeHours;
-      ukOvertimeHours += result.ukOvertimeHours;
-      nonUkOvertimeHours += result.nonUkOvertimeHours;
+      var holidayUkHours = 0.0;
+      var holidayNonUkHours = 0.0;
+
+      if (result.holidayHours > 0) {
+        for (final slot in record.slots) {
+          if (!slot.isWorked) {
+            continue;
+          }
+
+          if (slot.isUkWaters) {
+            holidayUkHours += 0.5;
+          } else {
+            holidayNonUkHours += 0.5;
+          }
+        }
+      }
+
+      // Holiday work remains visible as Holiday Hours in the UI,
+      // but for salary calculation it is paid as overtime.
+      ukHours +=
+          result.ukRegularHours + result.ukOvertimeHours + holidayUkHours;
+      nonUkHours += result.nonUkRegularHours +
+          result.nonUkOvertimeHours +
+          holidayNonUkHours;
+
+      ukOvertimeHours += result.ukOvertimeHours + holidayUkHours;
+      nonUkOvertimeHours += result.nonUkOvertimeHours + holidayNonUkHours;
     }
 
     final totalHours = ukHours + nonUkHours;
